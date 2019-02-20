@@ -77,6 +77,7 @@ class Test(unittest.TestCase):
                     time.sleep(2)
                 
                 try:
+                    print('Enter try catch')
                     elm_res_bt = driver.find_element_by_xpath(Obj_R.xpath_res_bt)
                     time.sleep(1)
                     ActionChains(driver).move_to_element(elm_res_bt).click(elm_res_bt).perform()
