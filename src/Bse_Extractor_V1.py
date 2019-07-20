@@ -16,8 +16,8 @@ import time
 import os
 from selenium.webdriver.support import expected_conditions as EC
 
-
-Bse_file = "C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/Bse_Res_Script_14Apr2019.xlsx"
+# Bse_file = "C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/Bse_Res_Script_14Apr2019.xlsx"
+Bse_file = "C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/Bse_Res_Script_14June2019.xlsx"
 driver = Obj_R.driver
 Wb = load_workbook(Bse_file)
 WsScripts = Wb['Sheet1']
@@ -95,7 +95,7 @@ class Test(unittest.TestCase):
                         
                     driver.find_element_by_xpath(Obj_R.xpath_tblHeader).location_once_scrolled_into_view
                     tblHeader =driver.find_element_by_xpath(Obj_R.xpath_tblHeader).get_attribute('innerText')
-                    if tblHeader.find('Mar-19') == -1:
+                    if tblHeader.find('Jun-19') == -1:
                         continue
                     else:
                         ActionChains(driver).click('//*[@id="tabres"]')
@@ -122,15 +122,14 @@ class Test(unittest.TestCase):
                     driver.find_element_by_xpath(Obj_R.xpath_res_tbl).location_once_scrolled_into_view
                     t_Tbl_details = driver.find_element_by_xpath(Obj_R.xpath_res_tbl).get_attribute('innerText')
                     t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-                    if t_Tbl_details.find('Mar-19')<0:
+                    if t_Tbl_details.find('Jun-19')<0:
 #                         temp_row = 'N'+ str(i)
 #                         WsScripts[temp_row]="No"
 #                         Wb.save(Bse_file)
                         continue        
                     
                     time.sleep(2)
-                    
-#                     driver.find_element_by_xpath('//*[@id="tabres"]').click()
+#               driver.find_element_by_xpath('//*[@id="tabres"]').click()
                     spt_Tbl_details = t_Tbl_details.splitlines()
                     Res_cnt = Ws_Result.max_row
                     if Res_cnt ==1:
