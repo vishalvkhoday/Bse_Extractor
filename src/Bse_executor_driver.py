@@ -13,7 +13,6 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from Object_repository import driver
 import Bse_Extractor_V1 as Bse
-import win32ctypes
 import re
 
 
