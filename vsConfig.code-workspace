@@ -7,5 +7,7 @@
 			"path": "..\\..\\eclipse-workspace\\CDI"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"python.pythonPath": "C:\\Python36\\python.exe"
+	}
 }

@@ -59,8 +59,8 @@ def NavigateResultsPage(ScriptName,INIE):
             browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
             tblHeader =browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
         
-        if tblHeader.find('Sep-20') == -1:
-            print("Sep-20 quarter results not declared")
+        if tblHeader.find('Mar-21') == -1:
+            print("Mar-21 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -87,7 +87,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element_by_xpath('//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element_by_xpath('//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Sep-20')<0:
+        if t_Tbl_details.find('Mar-21')<0:
                   
             time.sleep(2)
         spt_Tbl_details = t_Tbl_details.splitlines()
@@ -145,9 +145,9 @@ def GetTableRecord(Script,INIE):
 def WinHandlers():
     arrWin =browChrome.window_handles
     if len(arrWin)>1:
-        browChrome.switch_to_window(arrWin[1])
-        browChrome.close()
         browChrome.switch_to_window(arrWin[0])
+        browChrome.close()
+        browChrome.switch_to_window(arrWin[1])
         
 
 

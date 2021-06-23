@@ -37,9 +37,11 @@ def test_Nifty():
     while True:
         Options = ChromeOptions()
         Options.add_argument("start-maximized")
-    #     Options.add_argument("headless")
+        # Options.add_argument("headless")
         Options.add_argument("disable-infobar")
-        #     Options.add_argument("--incognito")
+        # Options.add_argument("user-data-dir=C:/Users/DELL/AppData/Local/Google/Chrome/User Data/Profile 2")
+        # Options.add_argument("--incognito")
+            
         ChromeBwr =webdriver.Chrome(executable_path="C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/chromedriver", chrome_options=Options)
         arrWin =ChromeBwr.window_handles
         if len(arrWin)>1:
@@ -48,6 +50,7 @@ def test_Nifty():
             ChromeBwr.switch_to_window(arrWin[0])
         #     ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")
         try:
+            # ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/liveIndexWatchData.json")
             ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/live_index_watch.htm")
             #     WebDriverWait(ChromeBwr,5).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="liveIndexWatch"]/tbody/tr[2]')), "Clicked on Home icone")
             tblExist=ChromeBwr.find_element_by_xpath('//*[@id="liveIndexWatch"]/tbody/tr[2]')

@@ -24,11 +24,14 @@ from pytest import fixture
 
 
 def ChBrowser():
-    Options = ChromeOptions()
-    Options.add_argument("start-maximized")
-#     Options.add_argument("headless")
-    Options.add_argument("disable-infobar")
-    #     Options.add_argument("--incognito")
-    ChromeBwr =webdriver.Chrome(executable_path="C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/chromedriver", chrome_options=Options)
-    return ChromeBwr
+    try:
+        WebOptions = webdriver.ChromeOptions()
+        WebOptions.add_argument("start-maximized")
+        WebOptions.add_argument("disable-infobars")
+#         driver = webdriver.Chrome(executable_path="C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/chromedriver", options=WebOptions,service_args=["--verbose", "--log-path=../../Log/ExecutionLogs.log"])
+        driver = webdriver.Chrome(executable_path="C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/chromedriver", chrome_options=WebOptions,service_args=["--verbose", "--log-path=../../Log/ExecutionLogs.log"])
+        return driver
+    except Exception as e:
+        print(e)
+        assert False
 
