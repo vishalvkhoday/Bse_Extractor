@@ -8,6 +8,7 @@ import pymssql
 import datetime
 from pytest import fixture
 
+
     
 # conn = pymssql.connect(user='sa',password='password',host='.\\SQLEXPRESS', database='Bse_Results',port='1433')
 # cur=conn.cursor()
