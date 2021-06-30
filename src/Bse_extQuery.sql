@@ -45,8 +45,8 @@ having count(*) >1
 ) */
 /*
 
+select * from tbl_Bse_Results 
 
-select * from tbl_Bse_Results
 
 rollback
 Begin Tran T1
@@ -119,3 +119,18 @@ commit
  select max(Trnx_date) from nse_eod)
  order by script_name
  */
+
+--  select * from tbl_ScriptList where script_name like '%ET%'
+
+--  delete from tbl_ScriptList where Script_Name in ('KSBPUMPS','KPIT'
+--  )
+ 
+
+-- select * from tbl_ScriptList where isin in (
+-- select Tisi from (
+--  select ISIN Tisi,COUNT(*) cnt from tbl_ScriptList
+--  group by ISIN
+--  having count(*)>1
+-- ) as T1
+-- )order by 2
+
