@@ -41,7 +41,7 @@ def test_Nifty():
     # Options.add_argument("--incognito")
         
     # ChromeBwr =webdriver.Chrome(chrome_options=Options,executable_path="WebDriver/chromedriver_235", service_args=["--verbose", "--log-path=WebDriver/qc1.log","w+"])
-    ChromeBwr =webdriver.Chrome(executable_path="C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/chromedriver", chrome_options=Options)
+    ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options)
     arrWin =ChromeBwr.window_handles
     if len(arrWin)>1:
         ChromeBwr.switch_to_window(arrWin[1])
@@ -51,11 +51,14 @@ def test_Nifty():
     try:
         ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/liveIndexWatchData.json")
         # ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/live_index_watch.htm")
-        #     WebDriverWait(ChromeBwr,5).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="liveIndexWatch"]/tbody/tr[2]')), "Clicked on Home icone")
+        #     WebDriverWait(ChromeBwr,5).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="liveIndexWatch"]/tbody/tr[2]')), "Clicked on Home icon")
         while True:
-            tblExist=ChromeBwr.find_element_by_xpath('/html/body/pre').get_attribute('innerText')
-            tblExist = str(tblExist).replace('{"data":[','').replace(']}', '')
-            dict_List =ast.literal_eval(tblExist)
+            try:
+                tblExist=ChromeBwr.find_element_by_xpath('/html/body/pre').get_attribute('innerText')
+                tblExist = str(tblExist).replace('{"data":[','').replace(']}', '')
+                dict_List =ast.literal_eval(tblExist)
+            except Exception as e:
+                print(e)
             
             for item in dict_List:
                 
@@ -85,17 +88,21 @@ def test_Nifty():
                 except:
                     DB_Operation().sqlRollBack(conn)
                     
-            
-            sleep(60)
-            ChromeBwr.refresh()
+            for i in range(0,43):
                 
-    except:
-        print("No data available")
+                print("*"*i, end = "\r")
+                sleep(1)
+                
+            ChromeBwr.refresh()
+            sleep(2)
+                
+    except Exception as e:
+        print(e)
         ChromeBwr.refresh()
                     
                  
             
-# if __name__ == "__main__":
-#     # import sys;sys.argv = ['', 'Test.testName']
-#     test_Nifty()
+if __name__ == "__main__":
+    # import sys;sys.argv = ['', 'Test.testName']
+    test_Nifty()
     

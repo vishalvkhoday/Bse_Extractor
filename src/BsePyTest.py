@@ -4,6 +4,7 @@ Created on Oct 27, 2019
 @author: DELL
 '''
 import allure
+import allure_commons
 import allure_pytest
 import pytest
 from DB_Operation import DB_Operation
@@ -30,11 +31,17 @@ def NavigateResultsPage(ScriptName,INIE):
         Bse_sctTxt = browChrome.find_element_by_xpath('//*[@id="getquotesearch"]')                
         Bse_sctTxt.send_keys(INIE)
         time.sleep(3)
-        Bse_sctTxt.send_keys(Keys.ENTER)
-        time.sleep(1)
+        try:
+            if browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").is_displayed():
+                browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").click()
+            else:
+                Bse_sctTxt.send_keys(Keys.ENTER)
+        except Exception as e:
+            print(e)            
+            time.sleep(1)
         browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
         scr_info =None
-        scr_info =browChrome.find_element_by_xpath('//*[@id="getquoteheader"]/div[6]/div[2]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]').get_attribute('innerText')
+        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
@@ -47,7 +54,7 @@ def NavigateResultsPage(ScriptName,INIE):
             browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
             time.sleep(2) 
         scr_info =None
-        scr_info =browChrome.find_element_by_xpath('//*[@id="getquoteheader"]/div[6]/div[2]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]').get_attribute('innerText')
+        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
@@ -59,22 +66,25 @@ def NavigateResultsPage(ScriptName,INIE):
             browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
             tblHeader =browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
         
-        if tblHeader.find('Mar-21') == -1:
-            print("Mar-21 quarter results not declared")
+        if tblHeader.find('Mar-22') == -1:
+            print("Mar-22 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
             time.sleep(2)
-#             elm_res_bt = browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table')
-#             time.sleep(1)
-#             ActionChains(browChrome).move_to_element(elm_res_bt).click(elm_res_bt).perform()
-#             ActionChains(browChrome).key_down(Keys.TAB).perform()
-#             ActionChains(browChrome).key_down(Keys.ENTER).perform()
+
             try:
-                browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
+                
+                # browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
+                browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
+                browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
+
                 time.sleep(2)
             except:
-                browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
+                try:
+                    browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
+                except:
+                    browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[4]/tr/td[2]/a').click()
                                                   
             return True
     except Exception as e:
@@ -87,7 +97,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element_by_xpath('//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element_by_xpath('//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Mar-21')<0:
+        if t_Tbl_details.find('Mar-22')<0:
                   
             time.sleep(2)
         spt_Tbl_details = t_Tbl_details.splitlines()
@@ -95,7 +105,7 @@ def GetTableRecord(Script,INIE):
         sec_code = ""
         sec_ISIN = ""
         scr_info =None
-        scr_info =browChrome.find_element_by_xpath('//*[@id="getquoteheader"]/div[6]/div[2]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]').get_attribute('innerText')
+        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         temp_scrId = str(scr_info).split("|")
@@ -185,3 +195,7 @@ while(True):
             
 print("Done....")
 browChrome.quit()
+
+if __name__ == "__main__":
+    # import sys;sys.argv = ['', 'Test.testName']
+    getScriptName()
