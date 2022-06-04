@@ -1,31 +1,38 @@
 /*
 
-select count(*) from tbl_Bse_Results
-select * from tbl_ScriptList where ToExecute='No' and islocked='No'
+select * from tbl_ScriptList where ToExecute='Yes' and islocked='No'
 
 select  * from tbl_ScriptList where Script_Name like'Boro%'
 
 update tbl_ScriptList set islocked ='Yes' 
 update tbl_ScriptList set  ToExecute='Yes' where Script_Name='INFY'
 
-
-select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name
-
 select * from tbl_Bse_Results where  Script_Name like'SSWL%'
 
 */
 
+delete from tbl_ScriptList where ISIN ='ISIN'
 -- begin tran T1
--- DELETE from tbl_Bse_Results where Script_name in (
--- select Script_name from tbl_Bse_Results where Q1='01-Mar-21')
-
+select *  from tbl_Bse_Results where Script_name in (
+select Script_name from tbl_Bse_Results where Q1='01-Mar-22')
+select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by script_name 
 
 select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='Yes'
-select * from tbl_ScriptList where IsLocked='No'order by script_name 
+select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
 select * from tbl_Bse_Results order by script_name 
-select  distinct Script_name from tbl_Bse_Results order by script_name 
 
--- select * from tbl_Bse_Results where Q1='Mar-21' order by script_name
+select  distinct Script_name from tbl_Bse_Results where Q1 ='Mar-22'
+order by script_name 
+
+select count(*) from Nifty_Ticker
+
+
+select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22'order by Script_name
+
+delete from tbl_Bse_Results where Script_name in (select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22')
+
+ 
+
 -- select max(trnx_date) from nse_eod
 -- select distinct [quarter] from Bse_Results order by 1
 
@@ -45,13 +52,12 @@ having count(*) >1
 ) */
 /*
 
-select * from tbl_Bse_Results 
 
+select * from tbl_Bse_Results
 
 rollback
 Begin Tran T1
-update tbl_Bse_Results set Q1=REPLACE(Q1,'Mar-21','01-Mar-21'),Q2=REPLACE(Q2,'Dec-20','01-Dec-20'),Q3 = replace(Q3,'Sep-20','01-Sep-20'),
-Q4=replace(Q4,'Jun-20','01-Jun-20') ,Q5= REPLACE(Q5,'Mar-20','01-Mar-20')
+update tbl_Bse_Results set Q1=REPLACE(Q1,'Mar-22','01-Mar-22'), Q2=replace(Q2,'Dec-21','01-Dec-21'),Q3= REPLACE(Q3,'Sep-21','01-Sep-21'),Q4=REPLACE(Q4,'Jun-21','01-Jun-21'),Q5 = replace(Q5,'Mar-21','01-Mar-21')
  
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
 Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
@@ -61,7 +67,7 @@ Q4=REPLACE(Q4,',',''), Q5=REPLACE(Q5,',','')
 
 commit
 
-select * from tbl_Bse_Results
+select * from tbl_Bse_Results order by script_name
 
 Begin Tran T2
 update Temp_Bse_Results set ISIN = s.ISIN from Temp_Bse_Results br inner join Sector s on
@@ -106,7 +112,7 @@ and  Trnx_date =(select  max(Trnx_date) from DailyHotPick)
 /*
 
 insert into tbl_Bse_Results_Archive
-select *,'SMarep-21' from tbl_Bse_Results
+select *,'Mar-21' from tbl_Bse_Results
 except
 select * from tbl_Bse_Results_Archive
 
@@ -134,3 +140,41 @@ commit
 -- ) as T1
 -- )order by 2
 
+
+
+select * from tbl_Bse_Results where Script_name in (select distinct script_name from tbl_Bse_Results where Q1='Dec-21')
+
+
+
+select count(*) from tbl_ShareHolderScriptList where IsLocked='Yes' and ToExecute ='Yes'
+select * from tbl_ShareHolderScriptList where IsLocked='No'order by script_name 
+select * from tbl_Bse_Results order by script_name 
+select  distinct Script_name from tbl_Bse_Results where Q1<>'Dec-21'
+order by script_name 
+
+select * from tbl_ShareHolding_BSE where [Quarter]='2022-03-01'
+
+--update tbl_Bse_Results set IsLocked='Yes'
+
+update tbl_ShareHolderScriptList set ISIN ='INE186H01022' where ISIN = 'INE412U01025'
+
+select * from tbl_ShareHolderScriptList where ToExecute='Yes'
+
+select * from tbl_ShareHolding_BSE
+
+select * from tbl_ShareHolder_Temp tsp
+where HoldingPerCent in (select max(HoldingPerCent)from tbl_ShareHolder_Temp tsp1 where tsp1.Script_name=tsp.Script_name 
+and tsp.HolderName=tsp1.HolderName)
+and [Quarter] = '2021-12-01'
+and tsp.HolderName like '%JHUNJHUN%'
+order by tsp.Script_name
+
+
+
+-- update tbl_ShareHolderScriptList set ToExecute='Yes',IsLocked='No'
+-- where Script_Name not in (
+-- select distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2021-12-01'
+-- )
+
+-- update tbl_ShareHolderScriptList set IsLocked='Yes'
+--
