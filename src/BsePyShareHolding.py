@@ -49,7 +49,10 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         time.sleep(3)
         try:
             if browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").is_displayed():
-                browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").click()
+                # browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").click()
+                temp_Script = str(ScriptName).lower()
+                listXpath = "//a[contains(@href,'{}')]".format(temp_Script)
+                browChrome.find_element(By.XPATH,listXpath).click()
             else:
                 Bse_sctTxt.send_keys(Keys.ENTER)
         except Exception as e:
@@ -63,6 +66,14 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
+        aryScript = scr_info.split("|")
+        if str(ScriptName).strip() ==str(aryScript[0]).strip():
+            print (ScriptName,INIE)
+        else:
+            print (ScriptName,INIE," Actual ",aryScript[0])
+            
+            
+
         if str(scr_info).find(INIE)==-1:
             browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').click()
             browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').send_keys(ScriptName +" ")

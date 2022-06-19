@@ -52,22 +52,31 @@ def NavigateResultsPage(ScriptName, INIE):
             browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
             time.sleep(2)
 
-        scr_info = None
-        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
-        scr_info = scr_info.replace("(","")
-        scr_info = scr_info.replace(")","")
-        scr_info = str(scr_info).strip()
+            scr_info = None
+            scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
+            scr_info = scr_info.replace("(","")
+            scr_info = scr_info.replace(")","")
+            scr_info = str(scr_info).strip()
 #         temp_scrId = str(scr_info).split("|")
         if str(scr_info).find(INIE) == -1:
             print("Actual script {} Expected {} |{}".format(scr_info, ScriptName, INIE))
             return False
         else:
+            
             browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
-#             tblHeader =browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        try:
-            browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
-        except:
-            browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
+            tblHeader =browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
+            try:
+                # browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
+                if tblHeader.find('Mar-22') == -1:
+                    print("Mar-22 quarter results not declared")
+                    return False
+                else:
+#                   browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
+                    time.sleep(2)
+                    browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
+                    browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
+            except:
+                browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
         time.sleep(2)
         return True
     except Exception as e:
