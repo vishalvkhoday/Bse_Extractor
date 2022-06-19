@@ -11,10 +11,9 @@ select * from tbl_Bse_Results where  Script_Name like'SSWL%'
 
 */
 
-delete from tbl_ScriptList where ISIN ='ISIN'
 -- begin tran T1
 select *  from tbl_Bse_Results where Script_name in (
-select Script_name from tbl_Bse_Results where Q1='01-Mar-22')
+select Script_name from tbl_Bse_Results where Q1='Mar-22')
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by script_name 
 
 select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='Yes'
@@ -29,10 +28,12 @@ select count(*) from Nifty_Ticker
 
 select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22'order by Script_name
 
-delete from tbl_Bse_Results where Script_name in (select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22')
+select * from tbl_ShareHolderScriptList where ISIN like '%|%'
 
+-- delete from tbl_Bse_Results where Script_name in (select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22')
+UPDATE tbl_ShareHolderScriptList set ISIN='INE947Q01028' where ISIN = 'INE947Q01010'
  
-
+select * from tbl_ShareHolderScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name
 -- select max(trnx_date) from nse_eod
 -- select distinct [quarter] from Bse_Results order by 1
 
@@ -177,4 +178,11 @@ order by tsp.Script_name
 -- )
 
 -- update tbl_ShareHolderScriptList set IsLocked='Yes'
---
+-
+
+select * from tbl_annualScriptList
+
+update tbl_AnnualScriptList set IsLocked='Yes'
+
+select distinct Script_name from tbl_AnnualBse_Results where Q1='2022'
+
