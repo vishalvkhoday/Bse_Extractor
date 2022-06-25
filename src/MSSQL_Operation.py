@@ -27,7 +27,17 @@ class DB_Operation():
         # conn = pymssql.connect(user='sa',password='password',host='LAPTOP-IFK6D8L3\\SQLEXPRESS', database='Bse_Results',port='1433')
         return conn
 #         
-    def db_select(self):
+    
+    def db_selectFetchone(self):
+        # conn = DB_Operation.db_ConnectionObject(self)
+        cur = conn.cursor()
+        cur.execute(self.sql_Query)
+        ret_Row_Val = cur.fetchall()
+        conn.close()
+        return ret_Row_Val
+
+
+    def db_selectFetchone(self):
         # conn = DB_Operation.db_ConnectionObject(self)
         cur = conn.cursor()
         cur.execute(self.sql_Query)
