@@ -49,6 +49,7 @@ def test_Nifty():
         ChromeBwr.switch_to_window(arrWin[0])
     #     ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")
     try:
+        # ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")
         ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/liveIndexWatchData.json")
         # ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/live_index_watch.htm")
         #     WebDriverWait(ChromeBwr,5).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="liveIndexWatch"]/tbody/tr[2]')), "Clicked on Home icon")

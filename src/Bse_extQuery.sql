@@ -186,3 +186,19 @@ update tbl_AnnualScriptList set IsLocked='Yes'
 
 select distinct Script_name from tbl_AnnualBse_Results where Q1='2022'
 
+select [Script_Name],round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly  from Nifty_Ticker where [DateTime] in (
+select distinct top 200 ([DateTime]) from Bse_Results.dbo.Nifty_Ticker order by [DateTime] desc
+) and Script_Name <> 'INDIA VIX'
+
+union ALL
+select [Script_Name],SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly  from Nifty_Ticker where [DateTime] in (
+select distinct top 200 ([DateTime]) from Bse_Results.dbo.Nifty_Ticker order by [DateTime] desc
+) and Script_Name = 'INDIA VIX'
+
+
+
+select top 750 round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly from Nifty_Ticker where Script_Name='NIFTY 50'
+
+union all
+select top 750 SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly from Nifty_Ticker where Script_Name='INDIA VIX'
+order by [DateTime] desc
