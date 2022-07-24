@@ -55,7 +55,7 @@ def test_Nifty():
         #     WebDriverWait(ChromeBwr,5).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="liveIndexWatch"]/tbody/tr[2]')), "Clicked on Home icon")
         while True:
             try:
-                tblExist=ChromeBwr.find_element_by_xpath('/html/body/pre').get_attribute('innerText')
+                tblExist=ChromeBwr.find_element(By.XPATH,'/html/body/pre').get_attribute('innerText')
                 tblExist = str(tblExist).replace('{"data":[','').replace(']}', '')
                 dict_List =ast.literal_eval(tblExist)
             except Exception as e:

@@ -17,3 +17,14 @@ and br.ISIN=sc.ISIN
 and sc.ToExecute='Yes'
 order by sc.Script_name
 
+
+select *,DATEPART(Q,[Quarter]) from tbl_ShareHolding_BSE where DATEPART(Q,[Quarter]) =2
+and YEAR([Quarter])='2022'
+order by Script_name
+
+select distinct [quarter] from tbl_ShareHolding_BSE
+order by 1
+
+
+select * from tbl_ShareHolderScriptList where ToExecute='No'
+update tbl_ShareHolderScriptList set ToExecute='Yes',IsLocked='No'

@@ -25,21 +25,25 @@ def NavigateResultsPage(ScriptName, INIE):
     try:
         WinHandlers()
         INIE = str(INIE).strip()
-        Bse_sctTxt = browChrome.find_element_by_xpath('//*[@id="getquotesearch"]')
+        Bse_sctTxt = browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]')
         Bse_sctTxt.send_keys(INIE)
         time.sleep(3)
         try:
             if browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").is_displayed():
-                browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").click()
+                # browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").click()
+                strListXpath = str("//*[contains(text(),'{}')]").format(ScriptName)
+                browChrome.find_element(By.XPATH,strListXpath).click()
             else:
                 Bse_sctTxt.send_keys(Keys.ENTER)
         except Exception as e:
+            Bse_sctTxt.send_keys(Keys.ENTER)
             print(e)     
         
         time.sleep(1)
-        browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
+        # browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
         scr_info = None
-        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
+        # scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
+        scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()

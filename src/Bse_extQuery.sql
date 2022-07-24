@@ -141,6 +141,7 @@ commit
 -- ) as T1
 -- )order by 2
 
+select * from tbl_AnnualBse_Results
 
 
 select * from tbl_Bse_Results where Script_name in (select distinct script_name from tbl_Bse_Results where Q1='Dec-21')
@@ -182,8 +183,8 @@ order by tsp.Script_name
 
 select * from tbl_annualScriptList
 
-update tbl_AnnualScriptList set IsLocked='Yes'
-
+update tbl_ShareHolderScriptList set IsLocked='Yes'
+select * from tbl_ShareHolderScriptList where Script_Name ='MARGOFIN'
 select distinct Script_name from tbl_AnnualBse_Results where Q1='2022'
 
 select [Script_Name],round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly  from Nifty_Ticker where [DateTime] in (
@@ -201,4 +202,18 @@ select top 750 round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([d
 
 union all
 select top 750 SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly from Nifty_Ticker where Script_Name='INDIA VIX'
+order by [DateTime] desc
+
+
+select * from tbl_AnnualBse_Results
+
+update tbl_AnnualBse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
+Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
+
+update tbl_AnnualBse_Results set Q1= replace(Q1,',',''),Q2=replace(Q2,',','') ,Q3= REPLACE(Q3,',',''),
+Q4=REPLACE(Q4,',',''), Q5=REPLACE(Q5,',','')
+
+
+
+select top 625 round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly,datePart(HOUR,[DateTime]) Hrs from Nifty_Ticker where Script_Name='NIFTY 50'
 order by [DateTime] desc
