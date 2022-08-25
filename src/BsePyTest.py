@@ -23,70 +23,96 @@ def getScriptName():
     ArryScrLst = objDb.db_select()
     return ArryScrLst
 
+def ObjExist(Obj):
+    if Obj.is_displayed():
+        return True
+    else:
+        False
+
+
 
 def NavigateResultsPage(ScriptName,INIE):
     try:
         WinHandlers()
         INIE = str(INIE).strip()
-        Bse_sctTxt = browChrome.find_element_by_xpath('//*[@id="getquotesearch"]')                
-        Bse_sctTxt.send_keys(INIE)
-        time.sleep(3)
+        Bse_sctTxt = browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]')                
+        Bse_sctTxt.send_keys(INIE +" ")
+        time.sleep(2)
+        Bse_sctTxt.send_keys(Keys.BACK_SPACE)
+        time.sleep(2)
         try:
-            if browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").is_displayed():
-                browChrome.find_element_by_xpath("//*[@id='ulSearchQuote']/li").click()
+            if browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").is_displayed():
+                # browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").click()
+                strSuggest_Xpath = "//*[contains(text(),'{}')]".format(INIE)
+                ObjFirstSuggestion = browChrome.find_element(By.XPATH,strSuggest_Xpath)
+                if ObjExist(ObjFirstSuggestion) == True:
+                    browChrome.find_element(By.XPATH,strSuggest_Xpath).click()
+                else:
+                    Bse_sctTxt.send_keys(Keys.ENTER)
             else:
                 Bse_sctTxt.send_keys(Keys.ENTER)
         except Exception as e:
             print(e)            
             time.sleep(1)
-        browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
+        browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
         scr_info =None
-        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
+        scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
 
         if str(scr_info).find(INIE)==-1:
-            browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').click()
-            browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').send_keys(ScriptName +" ")
+            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').click()
+            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').send_keys(ScriptName +" ")
             time.sleep(3)
-            browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').send_keys(Keys.ENTER)
-            browChrome.find_element_by_xpath('//*[@id="getquotesearch"]').clear()
+            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').send_keys(Keys.ENTER)
+            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
             time.sleep(2) 
-        scr_info =None
-        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
-        scr_info = scr_info.replace("(","")
-        scr_info = scr_info.replace(")","")
+            scr_info =None
+            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
+            scr_info = scr_info.replace("(","")
+            scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
         
         if str(scr_info).find(INIE)==-1:
             print("Actual script {} Expected {} |{}".format(scr_info,ScriptName,INIE))
             return False
         else:
-            browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
-            tblHeader =browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        
-        if tblHeader.find('Mar-22') == -1:
-            print("Mar-22 quarter results not declared")
-            return False
-        else:
-#             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
             time.sleep(2)
-
-            try:
-                
-                # browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
-                browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
+            browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").location_once_scrolled_into_view
+            if ObjExist(browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]")) == True:
                 browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
-
+            else:
+                
+                time.sleep(1)
+                browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
                 time.sleep(2)
-            except:
-                try:
-                    browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
-                except:
-                    browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[4]/tr/td[2]/a').click()
+                browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
+            # browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
+            # tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
+        
+#         if tblHeader.find('Jun-22') == -1:
+#             print("Jun-22 quarter results not declared")
+#             return False
+#         else:
+# #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
+#             time.sleep(2)
+
+#             try:
+                
+#                 # browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
+#                 browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
+#                 browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
+
+#                 time.sleep(2)
+#             except:
+#                 try:
+#                     browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
+#                 except:
+#                     browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/tbody[4]/tr/td[2]/a').click()
                                                   
             return True
+        
     except Exception as e:
         print('unable to navigate to results page error {}'.format(e))
         return False
@@ -94,56 +120,59 @@ def NavigateResultsPage(ScriptName,INIE):
 
 def GetTableRecord(Script,INIE):
     try:
-        browChrome.find_element_by_xpath('//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
-        t_Tbl_details = browChrome.find_element_by_xpath('//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
+        time.sleep(2)
+        browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
+        t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Mar-22')<0:
-                  
+        if t_Tbl_details.find('Jun-22')!=-1:
+                             
             time.sleep(2)
-        spt_Tbl_details = t_Tbl_details.splitlines()
-        secID=""
-        sec_code = ""
-        sec_ISIN = ""
-        scr_info =None
-        scr_info =browChrome.find_element_by_xpath('//div[@class="ng-binding"]').get_attribute('innerText')
-        scr_info = scr_info.replace("(","")
-        scr_info = scr_info.replace(")","")
-        temp_scrId = str(scr_info).split("|")
-        temp_scrId = temp_scrId
-        secID = temp_scrId[0]
-        sec_code =temp_scrId[1]
-        sec_ISIN = temp_scrId[2]
-        print(sec_code,secID)
-        if str(sec_ISIN.strip()) != str(INIE).strip():
-            # assert False
-            return False
-        else:
-            pass
-            conn = DB_Operation().db_ConnectionObject()
-            for row in spt_Tbl_details:
-                if len(row)>0:
-                    col = row.split('\t')
-                    if col[1] == 'Standalone':
-                        break
+            spt_Tbl_details = t_Tbl_details.splitlines()
+            secID=""
+            sec_code = ""
+            sec_ISIN = ""
+            scr_info =None
+            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
+            scr_info = scr_info.replace("(","")
+            scr_info = scr_info.replace(")","")
+            temp_scrId = str(scr_info).split("|")
+            temp_scrId = temp_scrId
+            secID = temp_scrId[0]
+            sec_code =temp_scrId[1]
+            sec_ISIN = temp_scrId[2]
+            print(sec_code,secID)
+            if str(sec_ISIN.strip()) != str(INIE).strip():
+                # assert False
+                return False
+            else:
+                pass
+                conn = DB_Operation().db_ConnectionObject()
+                for row in spt_Tbl_details:
+                    if len(row)>0:
+                        col = row.split('\t')
+                        if col[1] == 'Standalone':
+                            break
 
-                    if len(col)>= 6:
-                        sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','{}','{}','{}')".format(Script,INIE,col[0],col[1],col[2],col[3],col[4],col[5])
-                    elif len(col)== 5:
-                        sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','{}','{}','0')".format(Script,INIE,col[0],col[1],col[2],col[3],col[4])
-                    elif len(col)== 4:
-                        sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','{}','0','0')".format(Script,INIE,col[0],col[1],col[2],col[3])
-                    elif len(col)== 3:
-                        sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','0','0','0')".format(Script,INIE,col[0],col[1],col[2])
-                    elif len(col)== 2:
-                        sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','0','0','0','0')".format(Script,INIE,col[0],col[1])
-                                        
-                    
-                    DB_Operation().Insert_data(conn,sql_insert_bseResults)
-                else:
-                    continue
-            DB_Operation().sqlCommit(conn)
-            print("After insert commit performed..")
-            assert True
+                        if len(col)>= 6:
+                            sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','{}','{}','{}')".format(Script,INIE,col[0],col[1],col[2],col[3],col[4],col[5])
+                        elif len(col)== 5:
+                            sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','{}','{}','0')".format(Script,INIE,col[0],col[1],col[2],col[3],col[4])
+                        elif len(col)== 4:
+                            sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','{}','0','0')".format(Script,INIE,col[0],col[1],col[2],col[3])
+                        elif len(col)== 3:
+                            sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','{}','0','0','0')".format(Script,INIE,col[0],col[1],col[2])
+                        elif len(col)== 2:
+                            sql_insert_bseResults = "insert into tbl_Bse_Results values('{}','{}','{}','{}','0','0','0','0')".format(Script,INIE,col[0],col[1])
+                                            
+                        
+                        DB_Operation().Insert_data(conn,sql_insert_bseResults)
+                    else:
+                        continue
+                DB_Operation().sqlCommit(conn)
+                print("After insert commit performed..")
+                assert True
+        else:
+            return False
     except:
         try:
             DB_Operation().sqlRollBack(conn)

@@ -1,6 +1,5 @@
 
 
-import imp
 from selenium.webdriver import Chrome
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver import DesiredCapabilities
@@ -13,14 +12,13 @@ from time import sleep
 from pytest import fixture
 import allure
 import allure_pytest
-# from DB_Operation import DB_Operation
 
 from MSSQL_Operation import DB_Operation
 
 
 while True:
     Options =ChromeOptions()
-    # Options.add_argument('--user-data-dir=C:/Users/Vishal/AppData/Local/Google/Chrome/User Data/Profile 1')
+    Options.add_argument('--start-in-incognito')
     Options.add_argument('start-maximized')
     # Options.add_argument("--disable-extensions")
     chromeBrow = Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver",options=Options)
@@ -38,19 +36,27 @@ while True:
                 sleep(1)
 
 
-    chromeBrow.get("https://www.nseindia.com/market-data/equity-derivatives-watch")
+    try:
+        chromeBrow.get("https://www.nseindia.com/market-data/equity-derivatives-watch")
+    except Exception as e:
+        print(e)
+        chromeBrow.close()
     objDb =DB_Operation()
     # fnClick (chromeBrow.find_element(By.XPATH,'//*[@id="derivwatch-eqDeriv"]/div[1]/div[2]/select'))
     # fnClick (chromeBrow.find_element(By.XPATH,"//*[contains(text(),'Nifty 50 Options')]"))
-    sleep(1)
-    strTradDt = chromeBrow.find_element(By.XPATH,'//*[@id="liveEquityDerTimes"]').get_attribute('innerText')
-    strTradDt = str(strTradDt).replace('Market is Open As on','')
-    strTradDt = str(strTradDt).replace('Market is Closed As on','')
-    
-    strTradDt = str(strTradDt).replace('IST','').strip()
-    strTradDt = strTradDt[:20]
-    if len(str(strTradDt).strip())==0:
-        chromeBrow.refresh()
+    sleep(3)
+    try:
+        strTradDt = chromeBrow.find_element(By.XPATH,'//*[@id="liveEquityDerTimes"]').get_attribute('innerText')
+        strTradDt = str(strTradDt).replace('Market is Open As on','')
+        strTradDt = str(strTradDt).replace('Market is Closed As on','')
+        
+        strTradDt = str(strTradDt).replace('IST','').strip()
+        strTradDt = strTradDt[:20]
+        if len(str(strTradDt).strip())==0:
+            chromeBrow.refresh()
+    except Exception as e:
+        print(e)
+        continue
     # print(strTradDt) 
     sleep(3)
     try:
@@ -76,4 +82,7 @@ while True:
 
     print("\n\n\n *****************Completed for now*******************")
     chromeBrow.close()
-    sleep(300)
+    N=120
+    for i in range(N,-1,-1):                
+                print("Next refresh in {} seconds".format(i), end = "\r")
+                sleep(1)

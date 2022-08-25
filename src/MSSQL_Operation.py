@@ -29,9 +29,9 @@ class DB_Operation():
     def db_selectFetchAll(self,sql_Query):
         # conn = DB_Operation.db_ConnectionObject(self)
         cur = conn.cursor()
-        cur.execute(self.sql_Query)
+        cur.execute(sql_Query)
         ret_Row_Val = cur.fetchall()
-        conn.close()
+        # conn.close()
         return ret_Row_Val
 
     
@@ -49,7 +49,7 @@ class DB_Operation():
       
     def InsertUpdate_data(self,sql_Query):
         try:
-            # conn = DB_Operation.db_ConnectionObject(self)
+            # conn = DB_Operation.db_ConnectionObject(self="")
             # conn = objInsert
             cur = conn.cursor()
             cur.execute(sql_Query)

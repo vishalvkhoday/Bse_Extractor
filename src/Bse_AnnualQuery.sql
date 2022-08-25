@@ -17,7 +17,7 @@ and br.ISIN=sc.ISIN
 and sc.ToExecute='Yes'
 order by sc.Script_name
 
-
+update NameNutralizer set ToExecute='Yes',IsLocked='No'
 select *,DATEPART(Q,[Quarter]) from tbl_ShareHolding_BSE where DATEPART(Q,[Quarter]) =2
 and YEAR([Quarter])='2022'
 order by Script_name
@@ -28,3 +28,5 @@ order by 1
 
 select * from tbl_ShareHolderScriptList where ToExecute='No'
 update tbl_ShareHolderScriptList set ToExecute='Yes',IsLocked='No'
+
+select * from tbl_ShareHolderScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name

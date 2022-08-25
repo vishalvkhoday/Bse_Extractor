@@ -24,15 +24,22 @@ def getScriptName():
     return ArryScrLst
 
 def Navigate_PublicHolding():
+    time.sleep(2)
     arrWin =browChrome.window_handles
+    
     if len(arrWin)>1:
         # browChrome.switch_to_window(arrWin[1])
         browChrome.switch_to.window(arrWin[1])
-        browChrome.find_element(By.XPATH,'//*[@id="deribody"]/div[2]/div[1]/div[3]/ul/li[2]/a').click()
+        browChrome.execute_script("window.scrollTo(50,775)")
         time.sleep(1)
+        browChrome.find_element(By.XPATH,'//*[@id="deribody"]/div[2]/div[1]/div[3]/ul/li[2]/a').click()
+        
         browChrome.close()
     else:
+        browChrome.execute_script("window.scrollTo(50,775)")
+        time.sleep(1)
         browChrome.find_element(By.XPATH,'//*[@id="deribody"]/div[2]/div[1]/div[3]/ul/li[2]/a').click()
+        time.sleep(1)
         
     arrWin =browChrome.window_handles
     # browChrome.switch_to_window(arrWin[1])
@@ -45,14 +52,20 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         WinHandlers()
         INIE = str(INIE).strip()
         Bse_sctTxt = browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]')                
-        Bse_sctTxt.send_keys(INIE)
-        time.sleep(3)
+        Bse_sctTxt.send_keys(INIE+ " ")
+        time.sleep(1)
+        Bse_sctTxt.send_keys(Keys.BACK_SPACE)
+        time.sleep(2)
         try:
             if browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").is_displayed():
                 # browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").click()
-                temp_Script = str(ScriptName).lower()
-                listXpath = "//a[contains(@href,'{}')]".format(temp_Script)
-                browChrome.find_element(By.XPATH,listXpath).click()
+                try:
+                    temp_Script = str(ScriptName).lower()
+                    listXpath = "//a[contains(@href,'{}')]".format(temp_Script)
+                    browChrome.find_element(By.XPATH,listXpath).click()
+                except Exception as e:
+                    Bse_sctTxt.send_keys(Keys.ENTER)
+
             else:
                 Bse_sctTxt.send_keys(Keys.ENTER)
         except Exception as e:
@@ -62,7 +75,9 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         scr_info =None
         # scr_info =browChrome.find_element(By.XPATH,'//*[@id="getquoteheader"]/div[6]/div[2]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]').get_attribute('innerText')
         scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
-                                                    
+        
+        # browChrome.find_element(By.XPATH,'//*[@id="divmain"]/footer/div/div/div/div[1]/a[4]').location_once_scrolled_into_view
+        
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
@@ -77,7 +92,8 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         if str(scr_info).find(INIE)==-1:
             browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').click()
             browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').send_keys(ScriptName +" ")
-            time.sleep(3)
+            time.sleep(1)
+            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').send_keys(Keys.BACK_SPACE)
             try:
                 if browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").is_displayed():
                     browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").click()
@@ -100,16 +116,23 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         else:
             try:
                 # browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
-                
-                browChrome.find_element(By.XPATH,'(//a[@id="tabshp"])[1]').click()
-                browChrome.find_element(By.XPATH,'(//i[@class="fa fa-arrow-circle-right"])[3]').click()
+                time.sleep(1)
+                browChrome.execute_script("window.scrollTo(50,775)")
+                browChrome.find_element(By.XPATH,'//*[@class="panel-title"]/a[contains(@href,"shareholding-pattern")]').click()
+                # oResult =browChrome.find_element(By.XPATH,'//*[@id="tabshp"]')
+                # oResult.click()
+                # browChrome.find_element(By.XPATH,'(//a[@id="tabshp"])[1]').click()
+                # browChrome.find_element(By.XPATH,'(//i[@class="fa fa-arrow-circle-right"])[3]').click()
                 # browChrome.find_element(By.XPATH,"//a[contains(@href,'shareholding-pattern')]").click()
                 # tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
                 # if len(str(tblHeader).strip())==0:
                 #     tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/tbody[1]').get_attribute('innerText')
             except Exception as e:
-                browChrome.find_element(By.XPATH,'(//a[@id="tabshp"])[1]').click()
-                browChrome.find_element(By.XPATH,'(//i[@class="fa fa-arrow-circle-right"])[3]').click()
+                browChrome.find_element(By.XPATH,'//*[@id="shp"]/div/div[1]/div/table/tbody/tr[16]/td/a/i').location_once_scrolled_into_view
+                browChrome.find_element(By.XPATH,'(//a[@id="tabshp"])[1]').click()                 
+                browChrome.find_element(By.XPATH,"(//i[@class='fa fa-arrow-circle-right'])[3]").click()
+                browChrome.find_element(By.XPATH,"(//i[@class='fa fa-arrow-circle-right'])[3]").click()
+                
                 print("Error while process {}".format(e))
                 
                 
@@ -130,13 +153,17 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         try:
             browChrome.find_element(By.XPATH,"//a[@href='/index.html']").click()
         except:
-            browChrome.find_element(By.XPATH,"(//a[@href='/index.html'])[2]").click()
+            try:
+                browChrome.find_element(By.XPATH,"(//a[@href='/index.html'])[2]").click()
+            except Exception as e :
+                print(e)
             
         return False
 
 
 def GetTableRecord(Script,INIE):
     try:
+        time.sleep(1)
         Navigate_PublicHolding()
         # browChrome.find_element(By.XPATH,'//*[@id="deribody"]/div[2]/div[1]/div[3]/ul/li[2]/a').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="tdData"]/table/tbody/tr[3]/td/table/tbody').get_attribute('innerText')
@@ -144,7 +171,9 @@ def GetTableRecord(Script,INIE):
         qrtEnding = browChrome.find_element(By.XPATH,'//*[@id="tdData"]/table/tbody/tr[1]/td/table/tbody/tr[2]/td[2]').get_attribute('innerText')
         qrtEnding = qrtEnding.replace('Quarter ending : ','')
         qrtEnding = qrtEnding.replace(' ','/')
-        if len(qrtEnding)!=9 or qrtEnding=='June/2022':
+        if qrtEnding == '2-Aug-22':
+            pass
+        elif len(qrtEnding)!=9 or qrtEnding=='June/2022':
             qrtEnding = '01/'+str(qrtEnding)
         conn = DB_Operation().db_ConnectionObject()
         try:
@@ -265,9 +294,9 @@ print("Done....")
 browChrome.quit()
 
 
-if __name__ == "__main__":
-    # import sys;sys.argv = ['', 'Test.testName']
-    getScriptName()
+# if __name__ == "__main__":
+#     # import sys;sys.argv = ['', 'Test.testName']
+#     getScriptName()
 
 
        
