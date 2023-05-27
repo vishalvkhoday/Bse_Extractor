@@ -10,17 +10,23 @@ update tbl_ScriptList set  ToExecute='Yes' where Script_Name='INFY'
 select * from tbl_Bse_Results where  Script_Name like'SSWL%'
 
 */
-truncate TABLE tbl_Bse_Results
+
+update tbl_ScriptList set islocked ='Yes', ToExecute='Yes'
+
+
 -- begin tran T1
 select *  from tbl_Bse_Results where Script_name in (
 select Script_name from tbl_Bse_Results where Q1='Mar-22')
-select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by script_name 
+select * from tbl_ScriptList where ISIN='INE139A01034'
+and ToExecute='Yes' and IsLocked='No' order by script_name 
+
+
+-- update tbl_ScriptList set Script_Name ='MAHINDRA & MAHINDRA LTD' where ISIN='INE101A01026'
 
 select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='Yes'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
 select * from tbl_Bse_Results order by script_name 
-
-select  distinct Script_name from tbl_Bse_Results where Q1 ='Jun-22'
+select  distinct Script_name from tbl_Bse_Results where Q1 ='Sep-22'
 order by script_name 
 
 select count(*) from Nifty_Ticker
@@ -54,11 +60,11 @@ having count(*) >1
 /*
 
 
-select * from tbl_Bse_Results
+select * from tbl_Bse_Results order by script_name
 
 rollback
 Begin Tran T1
-update tbl_Bse_Results set Q1=REPLACE(Q1,'Jun-22','01-Jun-22'),Q2=REPLACE(Q2,'Mar-22','01-Mar-22'), Q3=replace(Q3,'Dec-21','01-Dec-21'),Q4 =REPLACE(Q4,'Sep-21','01-Sep-21'),Q5 = replace(Q5,'Jun-21','01-Jun-21')
+update tbl_Bse_Results set Q1 =REPLACE(Q1,'Sep-22','01-Sep-22'), Q2=REPLACE(Q2,'Jun-22','01-Jun-22'),Q3=REPLACE(Q3,'Mar-22','01-Mar-22'), Q4=replace(Q4,'Dec-21','01-Dec-21'),Q5 = replace(Q5,'Sep-21','01-Sep-21')
  
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
 Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')

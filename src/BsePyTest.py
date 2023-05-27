@@ -12,8 +12,12 @@ from Selenium_GridHub import *    # uncomment when executed on remote
 # import Selenium_GridHub 
 import time
 
-browChrome = Driver
-Driver.get("https://www.bseindia.com/")
+Options = ChromeOptions()
+Options.add_argument("start-maximized")
+Options.add_argument("headless")
+Options.add_argument("disable-infobar")
+browChrome = ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
+browChrome.get("https://www.bseindia.com/")
 
 
 
@@ -73,6 +77,13 @@ def NavigateResultsPage(ScriptName,INIE):
             scr_info = scr_info.replace("(","")
             scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
+        tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
+        if tblHeader.find('Sep-22') == -1:
+            print("Sep-22 quarter results not declared")
+            return False
+        else:
+#             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
+            time.sleep(2)
         
         if str(scr_info).find(INIE)==-1:
             print("Actual script {} Expected {} |{}".format(scr_info,ScriptName,INIE))
@@ -89,14 +100,9 @@ def NavigateResultsPage(ScriptName,INIE):
                 time.sleep(2)
                 browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
             # browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
-            # tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
+            
         
-#         if tblHeader.find('Jun-22') == -1:
-#             print("Jun-22 quarter results not declared")
-#             return False
-#         else:
-# #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
-#             time.sleep(2)
+        
 
 #             try:
                 
@@ -124,7 +130,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Jun-22')!=-1:
+        if t_Tbl_details.find('Sep-22')!=-1:
                              
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()

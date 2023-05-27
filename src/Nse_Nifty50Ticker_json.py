@@ -20,6 +20,7 @@ from DB_Operation import DB_Operation
 from time import sleep
 import json
 import ast
+import random
 
 # def ChBrowser():
 #     Options = ChromeOptions()
@@ -88,10 +89,10 @@ def test_Nifty():
                     DB_Operation().sqlCommit(conn)
                 except:
                     DB_Operation().sqlRollBack(conn)
-                    
-            for i in range(0,43):
-                
-                print("*"*i, end = "\r")
+            iRant = random.randint(30,80)
+            for i in range(iRant,-1,-1):
+                print("Next refresh in {} seconds".format(i), end = "\r")                
+                # print("*"*i, end = "\r")
                 sleep(1)
                 
             ChromeBwr.refresh()
