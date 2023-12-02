@@ -45,9 +45,12 @@ def test_Nifty():
     ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options)
     arrWin =ChromeBwr.window_handles
     if len(arrWin)>1:
-        ChromeBwr.switch_to_window(arrWin[1])
+        # ChromeBwr.switch_to_window(arrWin[1])
+        # ChromeBwr.close()
+        # ChromeBwr.switch_to_window(arrWin[0])
+        ChromeBwr.switch_to.new_window('tab')
         ChromeBwr.close()
-        ChromeBwr.switch_to_window(arrWin[0])
+        ChromeBwr.switch_to.window('main')
     #     ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")
     try:
         # ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")

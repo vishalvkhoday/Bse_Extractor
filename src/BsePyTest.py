@@ -20,11 +20,12 @@ browChrome = ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extr
 browChrome.get("https://www.bseindia.com/")
 
 
-
+@allure.step("Get ScriptName")
 def getScriptName():
     get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
     objDb =DB_Operation(get_script)
     ArryScrLst = objDb.db_select()
+    pass
     return ArryScrLst
 
 def ObjExist(Obj):
@@ -78,8 +79,8 @@ def NavigateResultsPage(ScriptName,INIE):
             scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Sep-22') == -1:
-            print("Sep-22 quarter results not declared")
+        if tblHeader.find('Mar-23') == -1:
+            print("Mar-23 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -130,7 +131,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Sep-22')!=-1:
+        if t_Tbl_details.find('Mar-23')!=-1:
                              
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
@@ -190,9 +191,11 @@ def GetTableRecord(Script,INIE):
 def WinHandlers():
     arrWin =browChrome.window_handles
     if len(arrWin)>1:
-        browChrome.switch_to_window(arrWin[0])
+        # browChrome.switch_to_window(arrWin[0])
+        browChrome.switch_to.new_window('tab')
         browChrome.close()
-        browChrome.switch_to_window(arrWin[1])
+        # browChrome.switch_to_window(arrWin[1])
+        browChrome.switch_to.new_window('window')
         
 
 

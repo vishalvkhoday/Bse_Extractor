@@ -101,7 +101,7 @@ while True:
                         # iCount= sum(map(nn.strMatch,sWord[:sLetter+1],str(strHolderName)))
                         iMatch = iMatch + 1
                     else:
-                         break
+                        break
             if iNameLen>= iExpHolderlen:
                 if iNameLen<=iMatch:
                     iMatchPercent = (iMatch/iNameLen)*100

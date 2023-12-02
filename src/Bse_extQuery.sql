@@ -1,19 +1,25 @@
+
+
 /*
 
 select * from tbl_ScriptList where ToExecute='Yes' and islocked='No'
 
 select  * from tbl_ScriptList where Script_Name like'Boro%'
 
-update tbl_ScriptList set islocked ='No' 
-update tbl_ScriptList set  ToExecute='Yes' where Script_Name='INFY'
+update tbl_ScriptList set islocked ='Yes' where script_name like 'I%'
 
+select * from tbl_scriptlist where script_name = 'RAIN'
 select * from tbl_Bse_Results where  Script_Name like'SSWL%'
 
 */
+SELECT distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2023/03/01'
+select * from tbl_ScriptList where  ISIN like 'INE696V01013'
+delete from tbl_ScriptList where ISIN = 'IN9175A01010'
 
+/*cd bs
 update tbl_ScriptList set islocked ='Yes', ToExecute='Yes'
 
-
+update tbl_ScriptList set islocked ='No' , ToExecute='Yes' where isin='INE075D01018'
 -- begin tran T1
 select *  from tbl_Bse_Results where Script_name in (
 select Script_name from tbl_Bse_Results where Q1='Mar-22')
@@ -23,48 +29,15 @@ and ToExecute='Yes' and IsLocked='No' order by script_name
 
 -- update tbl_ScriptList set Script_Name ='MAHINDRA & MAHINDRA LTD' where ISIN='INE101A01026'
 
-select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='Yes'
+select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='No'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
+select  distinct Script_name from tbl_Bse_Results where Q1 ='SEP-23' order by Script_name
 select * from tbl_Bse_Results order by script_name 
-select  distinct Script_name from tbl_Bse_Results where Q1 ='Sep-22'
-order by script_name 
-
-select count(*) from Nifty_Ticker
 
 
-select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22'order by Script_name
-
-select * from tbl_ShareHolderScriptList where ISIN like '%|%'
-
--- delete from tbl_Bse_Results where Script_name in (select distinct script_name from tbl_Bse_Results where Q1='01-Mar-22')
-UPDATE tbl_ShareHolderScriptList set ISIN='INE947Q01028' where ISIN = 'INE947Q01010'
- 
-select * from tbl_ShareHolderScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name
--- select max(trnx_date) from nse_eod
--- select distinct [quarter] from Bse_Results order by 1
-
---select * from tbl_ScriptList where script_name like '%INFY%'
---select * from Nifty_Ticker where Script_Name='Nifty 50' order by [datetime]  desc
-
-
---select * from tbl_scriptList where script_name like'KTK%'
-
-/*
-select * from tbl_ScriptList where ISIN in (
-select ISIN from (
-select  ISIN,count(*) cnt from tbl_scriptList
-group by ISIN
-having count(*) >1
-) as t1
-) */
-/*
-
-
-select * from tbl_Bse_Results order by script_name
-
-rollback
 Begin Tran T1
-update tbl_Bse_Results set Q1 =REPLACE(Q1,'Sep-22','01-Sep-22'), Q2=REPLACE(Q2,'Jun-22','01-Jun-22'),Q3=REPLACE(Q3,'Mar-22','01-Mar-22'), Q4=replace(Q4,'Dec-21','01-Dec-21'),Q5 = replace(Q5,'Sep-21','01-Sep-21')
+update tbl_Bse_Results set Q1 = REPLACE(Q1,'Sep-23','01-Sep-23'),Q2 = REPLACE(Q2,'Jun-23','01-Jun-23'),Q3 = REPLACE(Q3,'Mar-23','01-Mar-23'),Q4 = replace(Q4,'Dec-22','01-Dec-22'),
+Q5 = REPLACE(Q5,'Sep-22','01-Sep-22')
  
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
 Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
@@ -146,6 +119,7 @@ commit
 --  having count(*)>1
 -- ) as T1
 -- )order by 2
+/*
 
 select * from tbl_AnnualBse_Results
 
@@ -205,22 +179,21 @@ select distinct top 200 ([DateTime]) from Bse_Results.dbo.Nifty_Ticker order by 
 
 
 
-select top 750 round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly from Nifty_Ticker where Script_Name='NIFTY 50'
-
-union all
-select top 750 SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly from Nifty_Ticker where Script_Name='INDIA VIX'
-order by [DateTime] desc
-
-
-select * from tbl_AnnualBse_Results
-
-update tbl_AnnualBse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
-Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
-
-update tbl_AnnualBse_Results set Q1= replace(Q1,',',''),Q2=replace(Q2,',','') ,Q3= REPLACE(Q3,',',''),
-Q4=REPLACE(Q4,',',''), Q5=REPLACE(Q5,',','')
-
-
 
 select top 625 round(SpotPrice,-1)SpotPrice,chg,[DateTime],IndHigh,IndLow,day([dateTime])[Day],convert(time,[DateTime]) TimeOnly,CONVERT(date,[DateTime]) DateOnly,datePart(HOUR,[DateTime]) Hrs from Nifty_Ticker where Script_Name='NIFTY 50'
 order by [DateTime] desc
+*/
+
+
+/*
+aws s3 cp location\file s3://<bucket name>
+
+*/
+
+
+select * from bse_results where script_name like '%.'
+
+begin tran T1
+update bse_results set script_name = 'KOVAI MEDI' where script_name='KOVAI MEDI.'
+
+commit

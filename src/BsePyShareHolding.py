@@ -11,11 +11,13 @@ from selenium.webdriver.common.action_chains import ActionChains
 from Selenium_GridHub import *    # uncomment when executed on remote
 # import Selenium_GridHub 
 import time
+import logging
 
 browChrome = Driver
 Driver.get("https://www.bseindia.com/")
 
-
+logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",)
+# logger = logging.getLogger(__name__)
 
 def getScriptName():
     get_script="select * from tbl_ShareHolderScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
@@ -38,7 +40,8 @@ def Navigate_PublicHolding():
     else:
         browChrome.execute_script("window.scrollTo(50,775)")
         time.sleep(1)
-        browChrome.find_element(By.XPATH,'//*[@id="deribody"]/div[2]/div[1]/div[3]/ul/li[2]/a').click()
+        # browChrome.find_element(By.XPATH,'//*[@id="deribody"]/div[2]/div[1]/div[3]/ul/li[2]/a').click()
+        browChrome.find_element(By.XPATH,"//a[contains(text(),'the Public shareholder')]").click()
         time.sleep(1)
         
     arrWin =browChrome.window_handles
@@ -171,9 +174,9 @@ def GetTableRecord(Script,INIE):
         qrtEnding = browChrome.find_element(By.XPATH,'//*[@id="tdData"]/table/tbody/tr[1]/td/table/tbody/tr[2]/td[2]').get_attribute('innerText')
         qrtEnding = qrtEnding.replace('Quarter ending : ','')
         qrtEnding = qrtEnding.replace(' ','/')
-        if qrtEnding == '2-Aug-22':
+        if qrtEnding == '31-Mar-23':
             pass
-        elif len(qrtEnding)!=9 or qrtEnding=='June/2022':
+        elif len(qrtEnding)!=9 or qrtEnding=='March/2023':
             qrtEnding = '01/'+str(qrtEnding)
         conn = DB_Operation().db_ConnectionObject()
         try:
@@ -182,35 +185,48 @@ def GetTableRecord(Script,INIE):
                 rowXpath = '//*[@id="tdData"]/table/tbody/tr[3]/td/table/tbody/tr[{}]'.format(ii)
                 t_Tbl_details = browChrome.find_element(By.XPATH,rowXpath).get_attribute('innerText')
                 t_Tbl_details =t_Tbl_details.replace(',', '')
-                t_Tbl_details =t_Tbl_details.replace("'","")
+                t_Tbl_details =t_Tbl_details.replace("'","").replace("-",'')
                 arrTblRow = t_Tbl_details.split("\t")
                 if len(arrTblRow) ==1:
                     pass
                 elif len(arrTblRow)==8:
                     sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','','',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[3],arrTblRow[4],arrTblRow[5],arrTblRow[6],arrTblRow[7],qrtEnding,INIE)
                     print(sql_insert_bseResults)
-                    print(len(arrTblRow))
+                    
                     DB_Operation().Insert_data(conn,sql_insert_bseResults)
                 elif len(arrTblRow)==9:
                     sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[4],arrTblRow[5],arrTblRow[6],arrTblRow[7],'0','0',arrTblRow[8],qrtEnding,INIE)
                     print(sql_insert_bseResults)
-                    print(len(arrTblRow))
+                    
                     DB_Operation().Insert_data(conn,sql_insert_bseResults)
                 elif len(arrTblRow)==10:
                     sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[3],arrTblRow[4],arrTblRow[5],arrTblRow[6],arrTblRow[7],arrTblRow[8],arrTblRow[9],qrtEnding,INIE)
                     print(sql_insert_bseResults)
-                    print(len(arrTblRow))
+                    
                     DB_Operation().Insert_data(conn,sql_insert_bseResults)
                 elif len(arrTblRow)==11:
-                    sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[4],arrTblRow[5],arrTblRow[6],arrTblRow[7],arrTblRow[8],arrTblRow[9],arrTblRow[10],qrtEnding,INIE)
+                    sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','0','0','0',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[3],arrTblRow[4],arrTblRow[5],arrTblRow[6],qrtEnding,INIE)
                     print(sql_insert_bseResults)
-                    print(len(arrTblRow))
+                    
                     DB_Operation().Insert_data(conn,sql_insert_bseResults)
                 elif len(arrTblRow)==12:
-                    sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[3],arrTblRow[4],arrTblRow[5],arrTblRow[6],arrTblRow[9],arrTblRow[10],arrTblRow[11],qrtEnding,INIE)
+                    sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[4],arrTblRow[5],arrTblRow[6],arrTblRow[7],'','',arrTblRow[8],qrtEnding,INIE)
                     print(sql_insert_bseResults) 
-                    print(len(arrTblRow))                         
+                                           
                     DB_Operation().Insert_data(conn,sql_insert_bseResults)
+                elif len(arrTblRow)==13:
+                    sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[3],arrTblRow[4],arrTblRow[5],arrTblRow[6],'',arrTblRow[8],arrTblRow[9],qrtEnding,INIE)
+                    print(sql_insert_bseResults) 
+                                           
+                    DB_Operation().Insert_data(conn,sql_insert_bseResults)
+                
+                elif len(arrTblRow)==15:
+                    sql_insert_bseResults = "insert into tbl_ShareHolding_BSE values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}','{}',convert(date,'{}'),'{}')".format(Script,(arrTblRow[0])[0:99],arrTblRow[1],arrTblRow[2],arrTblRow[3],arrTblRow[4],arrTblRow[5],arrTblRow[6],'',arrTblRow[10],arrTblRow[11],qrtEnding,INIE)
+                    print(sql_insert_bseResults) 
+                                           
+                    DB_Operation().Insert_data(conn,sql_insert_bseResults)
+                    
+
                 else :
                     return False
                     break
@@ -246,9 +262,10 @@ def GetTableRecord(Script,INIE):
 def WinHandlers():
     arrWin =browChrome.window_handles
     if len(arrWin)>1:
-        browChrome.switch_to_window(arrWin[0])
+        # browChrome.switch_to_window(arrWin[0])
+        browChrome.switch_to.window(arrWin[0])
         browChrome.close()
-        browChrome.switch_to_window(arrWin[1])
+        browChrome.switch_to.window(arrWin[1])
 
 
 sqlTablereset ="update tbl_ShareHolderScriptList set IsLocked='No' where ToExecute='Yes'"

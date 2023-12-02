@@ -21,7 +21,7 @@ from selenium.webdriver.chrome.service import Service
 def getRemoteBrowser():
     Options = ChromeOptions()
     Options.add_argument("start-maximized")
-    Options.add_argument("headless")
+    # Options.add_argument("headless")
     Options.add_argument("disable-infobar")
 #     Options.add_argument("--incognito")
     
