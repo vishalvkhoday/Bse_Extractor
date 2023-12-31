@@ -22,19 +22,24 @@ import json
 import ast
 import random
 import datetime
+from selenium.webdriver.chrome.service import Service
+
+
+Options = ChromeOptions()
+Options.add_argument("start-maximized")
+# Options.add_argument("headless")
+Options.add_argument("disable-infobar")
+serviceObj = Service('C:/Users/Vishal/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe')
+
+
 
     
 def test_Nifty():
+
+
     
-    Options = ChromeOptions()
-    Options.add_argument("start-maximized")
-    # Options.add_argument("headless")
-    # Options.add_argument("disable-infobar")
-    # Options.add_argument("user-data-dir=C:/Users/DELL/AppData/Local/Google/Chrome/User Data/Profile 2")
-    # Options.add_argument("--incognito")
-        
-    # ChromeBwr =webdriver.Chrome(chrome_options=Options,executable_path="WebDriver/chromedriver_235", service_args=["--verbose", "--log-path=WebDriver/qc1.log","w+"])
-    ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options)
+    
+    ChromeBwr =  webdriver.Chrome(service=serviceObj,options=Options)
     arrWin =ChromeBwr.window_handles
     if len(arrWin)>1:
         ChromeBwr.switch_to.new_window('tab')
@@ -42,12 +47,21 @@ def test_Nifty():
         ChromeBwr.switch_to.window('main')
     
     try:
-        ChromeBwr.get("https://www.niftyindices.com/market-data/live-index-watch")
+        ChromeBwr.get("https://www.nseindia.com/api/allIndices")
         
         while True:
             try:
-                TrdDatetime = ChromeBwr.find_element(By.XPATH,'//*[@id="stockwatchtime"]').get_attribute('innerText')
+                allData = 
+                TrdDatetime = ChromeBwr.find_element(By.XPATH,'/html/body/pre').get_attribute('innerText')
+                curTime = datetime.datetime.now().strftime('%H:%M:%S')
+                #cTrdTime = datetime.datetime.strptime(TrdDatetime,'%H:%M:%S').time()
+
+                #print(datetime.datetime.timestamp())
                 strdt = str(datetime.date.today())+' '+ str(TrdDatetime)
+                # strdt = datetime.datetime.strptime(strdt,'%Y-%m-%d %H:%M:%S %p').now()
+                # if strdt <= datetime.datetime.now():
+                #     pass
+               
                 for x in range(1,14):
                     tblExist=ChromeBwr.find_element(By.XPATH,f'//*[@id="stockwatchtable"]/tbody/tr[{x}]').get_attribute('innerText')
                     tblExist = str(tblExist).replace('%','').replace('\t\n\t','\t').replace('\n\t','\t')

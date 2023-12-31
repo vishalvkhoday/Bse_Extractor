@@ -8,15 +8,29 @@ import allure_commons
 import allure_pytest
 import pytest
 from DB_Operation import DB_Operation
-from Selenium_GridHub import *    # uncomment when executed on remote
+# from Selenium_GridHub import *    # uncomment when executed on remote
 # import Selenium_GridHub 
-import time
+import time,selenium
+
+from selenium.webdriver import Chrome
+from selenium.webdriver import ChromeOptions
+from selenium.webdriver import DesiredCapabilities
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
-Options.add_argument("headless")
+# Options.add_argument("headless")
 Options.add_argument("disable-infobar")
-browChrome = ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
+serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
+
+browChrome =  webdriver.Chrome(service=serviceObj,options=Options) #Driver
+# browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
 browChrome.get("https://www.bseindia.com/")
 
 
@@ -25,7 +39,6 @@ def getScriptName():
     get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
     objDb =DB_Operation(get_script)
     ArryScrLst = objDb.db_select()
-    pass
     return ArryScrLst
 
 def ObjExist(Obj):
@@ -61,7 +74,7 @@ def NavigateResultsPage(ScriptName,INIE):
             time.sleep(1)
         browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
         scr_info =None
-        scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
+        scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding ng-scope"]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
@@ -74,13 +87,14 @@ def NavigateResultsPage(ScriptName,INIE):
             browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
             time.sleep(2) 
             scr_info =None
-            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
+            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding ng-scope"]').get_attribute('innerText')
             scr_info = scr_info.replace("(","")
             scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
+        WebDriverWait(browChrome,5).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Mar-23') == -1:
-            print("Mar-23 quarter results not declared")
+        if tblHeader.find('Sep-23') == -1:
+            print("Sep-23 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -131,7 +145,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Mar-23')!=-1:
+        if t_Tbl_details.find('Sep-23')!=-1:
                              
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
@@ -139,7 +153,7 @@ def GetTableRecord(Script,INIE):
             sec_code = ""
             sec_ISIN = ""
             scr_info =None
-            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
+            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding ng-scope"]').get_attribute('innerText')
             scr_info = scr_info.replace("(","")
             scr_info = scr_info.replace(")","")
             temp_scrId = str(scr_info).split("|")
@@ -206,7 +220,12 @@ DB_Operation().sqlCommit(objTblreset)
 while(True):
     WinHandlers()
     ScriptName = getScriptName()
-    if ScriptName ==None:
+    try:
+        browChrome.find_element(By.XPATH,'//*[@id="myimg"]/div/div/div/p/button').click()
+    except:
+        pass
+
+    if ScriptName == None:
         print("No more script to execute")
         sqlTablereset ="update tbl_ScriptList set IsLocked='No' where ToExecute='Yes'"
         objTblreset = DB_Operation().db_ConnectionObject()

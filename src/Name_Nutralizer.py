@@ -59,8 +59,8 @@ class NameNutralizer:
         else:
             return 0
 
-objDb =DB_Operation()
-nn=NameNutralizer
+objDb = DB_Operation()
+nn = NameNutralizer
 nn.unLockRecord()
 lstAllHolderName = list(nn.getAllHolderName())
 
