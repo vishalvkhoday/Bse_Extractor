@@ -25,7 +25,7 @@ from selenium.webdriver.chrome.service import Service
 
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
-# Options.add_argument("headless")
+Options.add_argument("headless")
 Options.add_argument("disable-infobar")
 serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
 

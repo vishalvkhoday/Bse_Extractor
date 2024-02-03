@@ -8,13 +8,33 @@ import allure_pytest
 import pytest
 from DB_Operation import DB_Operation
 from selenium.webdriver.common.action_chains import ActionChains
-from Selenium_GridHub import *    # uncomment when executed on remote
+# from Selenium_GridHub import *    # uncomment when executed on remote
 # import Selenium_GridHub 
 import time
 import logging
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ChromeOptions
+from selenium import webdriver
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
 
-browChrome = Driver
-Driver.get("https://www.bseindia.com/")
+
+Options = ChromeOptions()
+Options.add_argument("start-maximized")
+# Options.add_argument("headless")
+Options.add_argument("disable-infobar")
+serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
+
+
+browChrome =  webdriver.Chrome(service=serviceObj,options=Options) #Driver
+# browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
+browChrome.get("https://www.bseindia.com/")
+
+
+# browChrome = Driver
+# Driver.get("https://www.bseindia.com/")
 
 logging.basicConfig(level=logging.INFO,format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",)
 # logger = logging.getLogger(__name__)

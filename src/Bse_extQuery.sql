@@ -16,8 +16,14 @@ SELECT distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2023/0
 select * from tbl_ScriptList where  ISIN like 'INE696V01013'
 delete from tbl_ScriptList where ISIN = 'IN9175A01010'
 
+update tbl_ShareHolderScriptList set ToExecute='Yes',IsLocked='No'
+
+delete from tbl_ShareHolderScriptList where ISIN = ''
+
 /*cd bs
 update tbl_ScriptList set islocked ='Yes', ToExecute='Yes'
+
+update tbl_ScriptList set islocked ='Yes' where Script_name like 'F%'
 
 update tbl_ScriptList set islocked ='No' , ToExecute='Yes' where isin='INE075D01018'
 -- begin tran T1
@@ -29,9 +35,9 @@ and ToExecute='Yes' and IsLocked='No' order by script_name
 
 -- update tbl_ScriptList set Script_Name ='MAHINDRA & MAHINDRA LTD' where ISIN='INE101A01026'
 
-select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='No'
+select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='Yes'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
-select  distinct Script_name from tbl_Bse_Results where Q1 ='SEP-23' order by Script_name
+select  distinct Script_name from tbl_Bse_Results where Q1 ='Dec-23' order by Script_name
 select * from tbl_Bse_Results order by script_name 
 
 
