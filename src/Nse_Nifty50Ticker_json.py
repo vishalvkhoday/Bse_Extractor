@@ -116,7 +116,7 @@ def test_Nifty():
                     DB_Operation().sqlCommit(conn)
                 except:
                     DB_Operation().sqlRollBack(conn)
-            iRant = random.randint(50,90)
+            iRant = random.randint(50,100)
             for i in range(iRant,-1,-1):
                 print("Next refresh in {} seconds".format(i), end = "\r")                
                 # print("*"*i, end = "\r")

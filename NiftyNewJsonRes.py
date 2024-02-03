@@ -21,7 +21,9 @@ while True:
     if stcode == 200:
         # print(res.text)
         sRes = res.text
-        sRes = sRes.replace('{"data":','')
+        sRes = sRes.replace('\r\n','')
+        # sRes = sRes.replace('{"data":','')
+        sRes = sRes.replace('{  "data":','')
         sRes = sRes[:-1]
         sResJson = json.loads(sRes)
         
