@@ -1,4 +1,5 @@
 
+update tbl_ScriptList set islocked ='Yes' where Script_name like 'M%'
 
 /*
 
@@ -11,7 +12,7 @@ update tbl_ScriptList set islocked ='Yes' where script_name like 'I%'
 select * from tbl_scriptlist where script_name = 'RAIN'
 select * from tbl_Bse_Results where  Script_Name like'SSWL%'
 
-*/
+
 SELECT distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2023/03/01'
 select * from tbl_ScriptList where  ISIN like 'INE696V01013'
 delete from tbl_ScriptList where ISIN = 'IN9175A01010'
@@ -19,11 +20,12 @@ delete from tbl_ScriptList where ISIN = 'IN9175A01010'
 update tbl_ShareHolderScriptList set ToExecute='Yes',IsLocked='No'
 
 delete from tbl_ShareHolderScriptList where ISIN = ''
+*/
 
 /*cd bs
 update tbl_ScriptList set islocked ='Yes', ToExecute='Yes'
 
-update tbl_ScriptList set islocked ='Yes' where Script_name like 'F%'
+
 
 update tbl_ScriptList set islocked ='No' , ToExecute='Yes' where isin='INE075D01018'
 -- begin tran T1
@@ -35,15 +37,19 @@ and ToExecute='Yes' and IsLocked='No' order by script_name
 
 -- update tbl_ScriptList set Script_Name ='MAHINDRA & MAHINDRA LTD' where ISIN='INE101A01026'
 
-select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='Yes'
+select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='No'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
 select  distinct Script_name from tbl_Bse_Results where Q1 ='Dec-23' order by Script_name
 select * from tbl_Bse_Results order by script_name 
 
 
 Begin Tran T1
-update tbl_Bse_Results set Q1 = REPLACE(Q1,'Sep-23','01-Sep-23'),Q2 = REPLACE(Q2,'Jun-23','01-Jun-23'),Q3 = REPLACE(Q3,'Mar-23','01-Mar-23'),Q4 = replace(Q4,'Dec-22','01-Dec-22'),
-Q5 = REPLACE(Q5,'Sep-22','01-Sep-22')
+update tbl_Bse_Results set 
+Q1 = replace(Q1,'Dec-23','01-Dec-23'),
+Q2 = REPLACE(Q2,'Sep-23','01-Sep-23'),
+Q3 = REPLACE(Q3,'Jun-23','01-Jun-23'),
+Q4 = REPLACE(Q4,'Mar-23','01-Mar-23'),
+Q5 = REPLACE(Q5,'Jun-22','01-Jun-22')
  
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
 Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
@@ -196,10 +202,3 @@ aws s3 cp location\file s3://<bucket name>
 
 */
 
-
-select * from bse_results where script_name like '%.'
-
-begin tran T1
-update bse_results set script_name = 'KOVAI MEDI' where script_name='KOVAI MEDI.'
-
-commit
