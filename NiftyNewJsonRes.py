@@ -21,13 +21,21 @@ while True:
     if stcode == 200:
         # print(res.text)
         sRes = res.text
-        sRes = sRes.replace('\r\n','')
-        # sRes = sRes.replace('{"data":','')
-        sRes = sRes.replace('{  "data":','')
-        sRes = sRes[:-1]
-        sResJson = json.loads(sRes)
         
-        Niftyticker = list(fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson))
+        try:
+            with open('C:\\Test\Data_1.txt','w') as f:
+                f.write(sRes)
+            
+            sResJson = json.loads(sRes)
+        except Exception as e:
+            print(e)
+            with open('C:\\Test\Data_1.txt','w') as f:
+                f.write(sRes)
+            time.sleep(1)
+            continue
+        
+        # Niftyticker = fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson)
+        Niftyticker = list(fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson["data"]))
         
         for i in Niftyticker:
             print(i)

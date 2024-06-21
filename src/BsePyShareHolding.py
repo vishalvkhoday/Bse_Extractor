@@ -97,7 +97,7 @@ def NavigateShareHoldingPage(ScriptName,INIE):
         browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
         scr_info =None
         # scr_info =browChrome.find_element(By.XPATH,'//*[@id="getquoteheader"]/div[6]/div[2]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]').get_attribute('innerText')
-        scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding"]').get_attribute('innerText')
+        scr_info =browChrome.find_element(By.XPATH,'//*[@class="home_widget"]/div[2]').get_attribute('innerText')
         
         # browChrome.find_element(By.XPATH,'//*[@id="divmain"]/footer/div/div/div/div[1]/a[4]').location_once_scrolled_into_view
         

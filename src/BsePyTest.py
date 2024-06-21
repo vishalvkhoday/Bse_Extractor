@@ -26,16 +26,19 @@ from selenium.webdriver.chrome.service import Service
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
 Options.add_argument("headless")
-
+# profilePath = "C:\\Users\\Vishal\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
+# Options.add_argument("user-data-dir=" + profilePath)
 Options.add_argument("disable-infobar")
 serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
 
+# browChrome =  webdriver.Chrome(options=Options) #Driver
 browChrome =  webdriver.Chrome(service=serviceObj,options=Options) #Driver
 # browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
 browChrome.get("https://www.bseindia.com/")
 
 
-@allure.step("Get ScriptName")
+
+
 def getScriptName():
     get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
     objDb =DB_Operation(get_script)
@@ -75,7 +78,7 @@ def NavigateResultsPage(ScriptName,INIE):
             time.sleep(1)
         browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
         scr_info =None
-        scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding ng-scope"]').get_attribute('innerText')
+        scr_info =browChrome.find_element(By.XPATH,'//*[@class="home_widget"]/div[2]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
@@ -92,10 +95,10 @@ def NavigateResultsPage(ScriptName,INIE):
             scr_info = scr_info.replace("(","")
             scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
-        WebDriverWait(browChrome,5).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
+        WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Dec-23') == -1:
-            print("Dec-23 quarter results not declared")
+        if tblHeader.find('Mar-24') == -1:
+            print("Mar-24 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -106,33 +109,16 @@ def NavigateResultsPage(ScriptName,INIE):
             return False
         else:
             time.sleep(2)
-            browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").location_once_scrolled_into_view
+            browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[1]").location_once_scrolled_into_view
             if ObjExist(browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]")) == True:
                 browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
             else:
                 
                 time.sleep(1)
-                browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
+                browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[1]").click()
                 time.sleep(2)
                 browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
-            # browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').location_once_scrolled_into_view
-            
         
-        
-
-#             try:
-                
-#                 # browChrome.find_element_by_xpath('//*[@id="res"]/div/div[1]/table/tbody[6]/tr/td[2]/a').click()
-#                 browChrome.find_element(By.XPATH,"(//a[contains(text(),'Financials')])[2]").click()
-#                 browChrome.find_element(By.XPATH,"(//a[contains(@href,'results')])[1]").click()
-
-#                 time.sleep(2)
-#             except:
-#                 try:
-#                     browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/tbody[7]/tr/td[2]/a').click()
-#                 except:
-#                     browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/tbody[4]/tr/td[2]/a').click()
-                                                  
             return True
         
     except Exception as e:
@@ -146,7 +132,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Dec-23')!=-1:
+        if t_Tbl_details.find('Mar-24')!=-1:
                              
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
@@ -222,7 +208,7 @@ while(True):
     WinHandlers()
     ScriptName = getScriptName()
     try:
-        browChrome.find_element(By.XPATH,'//*[@id="myimg"]/div/div/div/p/button').click()
+        browChrome.find_element(By.XPATH,'(//*[@aria-label="Close"])[1]').click()
     except:
         pass
 
