@@ -25,7 +25,7 @@ from selenium.webdriver.chrome.service import Service
 
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
-Options.add_argument("headless")
+# Options.add_argument("headless")
 # profilePath = "C:\\Users\\Vishal\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
 # Options.add_argument("user-data-dir=" + profilePath)
 Options.add_argument("disable-infobar")
