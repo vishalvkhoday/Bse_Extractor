@@ -51,7 +51,11 @@ def test_Nifty():
     
     Options = ChromeOptions()
     Options.add_argument("start-maximized")
+<<<<<<< Updated upstream
     # Options.add_argument("headless")   # Commentfor headless Test1
+=======
+    # Options.add_argument("headless")   # Commentfor headless test1
+>>>>>>> Stashed changes
     # Options.add_argument("disable-infobar")
     # Options.add_argument("user-data-dir=C:/Users/DELL/AppData/Local/Google/Chrome/User Data/Profile 2")
     # Options.add_argument("--incognito")
