@@ -4,12 +4,8 @@ Created on Sep 20, 2020
 @author: DELL
 '''
 
-from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver import Chrome
 from selenium.webdriver import ChromeOptions
-from selenium.webdriver import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys  
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium import webdriver
@@ -19,7 +15,6 @@ from pytest import fixture
 from DB_Operation import DB_Operation
 from time import sleep
 import json
-import ast
 import random
 from selenium.webdriver.chrome.service import Service
 import pandas as pd
@@ -30,44 +25,20 @@ Options.add_argument("start-maximized")
 # Options.add_argument("headless")
 Options.add_argument("disable-infobar")
 serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
-serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
 
-
-
-
-# def ChBrowser():
-#     Options = ChromeOptions()
-#     Options.add_argument("start-maximized")
-# #     Options.add_argument("headless")
-#     Options.add_argument("disable-infobar")
-#     #     Options.add_argument("--incognito")
-#     ChromeBwr =webdriver.Chrome(executable_path="C:/Users/DELL/git/Selenium_NSE_Algo/Additonal_Utility/chromedriver", chrome_options=Options)
-#     return ChromeBwr
 
 
 dfAll_Data = pd.DataFrame()
 
 def test_Nifty():
     
-    Options = ChromeOptions()
-    Options.add_argument("start-maximized")
-<<<<<<< Updated upstream
-    # Options.add_argument("headless")   # Commentfor headless Test1
-=======
-    # Options.add_argument("headless")   # Commentfor headless test1
->>>>>>> Stashed changes
-    # Options.add_argument("disable-infobar")
-    # Options.add_argument("user-data-dir=C:/Users/DELL/AppData/Local/Google/Chrome/User Data/Profile 2")
-    # Options.add_argument("--incognito")
-        
+    Options = ChromeOptions()    
     # ChromeBwr =webdriver.Chrome(chrome_options=Options,executable_path="WebDriver/chromedriver_235", service_args=["--verbose", "--log-path=WebDriver/qc1.log","w+"])
     # ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options)
     ChromeBwr =  webdriver.Chrome(service=serviceObj,options=Options)
     arrWin =ChromeBwr.window_handles
     if len(arrWin)>1:
-        # ChromeBwr.switch_to_window(arrWin[1])
-        # ChromeBwr.close()
-        # ChromeBwr.switch_to_window(arrWin[0])
+        
         ChromeBwr.switch_to.new_window('tab')
         ChromeBwr.close()
         ChromeBwr.switch_to.window('main')
@@ -84,9 +55,7 @@ def test_Nifty():
                 # tblExist = str(tblExist).replace('{"data":[','').replace(']}', '')
                 tblExist = str(tblExist)
                 JsonVal = json.loads(tblExist)
-                # for x in JsonVal['data']:
-                #     print(x)
-                # dict_List =ast.literal_eval(JsonVal)
+                
             except Exception as e:
                 print(e)
                 sleep(1)
@@ -122,7 +91,7 @@ def test_Nifty():
                     DB_Operation().sqlRollBack(conn)
             iRant = random.randint(50,100)
             for i in range(iRant,-1,-1):
-                print("Next refresh in {} seconds".format(i), end = "\r")                
+                print("Next refresh in {} seconds ".format(i), end = "\r")                
                 # print("*"*i, end = "\r")
                 sleep(1)
                 
@@ -136,6 +105,6 @@ def test_Nifty():
                  
             
 if __name__ == "__main__":
-    # import sys;sys.argv = ['', 'Test.testName']
+    
     test_Nifty()
     
