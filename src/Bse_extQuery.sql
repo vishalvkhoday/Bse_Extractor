@@ -1,16 +1,7 @@
 
-update tbl_ScriptList set islocked ='Yes' where Script_name like 'M%'
 
 /*
 
-select * from tbl_ScriptList where ToExecute='Yes' and islocked='No'
-
-select  * from tbl_ScriptList where Script_Name like'Boro%'
-
-update tbl_ScriptList set islocked ='Yes' where script_name like 'I%'
-
-select * from tbl_scriptlist where script_name = 'RAIN'
-select * from tbl_Bse_Results where  Script_Name like'SSWL%'
 
 
 SELECT distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2023/03/01'
@@ -19,14 +10,14 @@ delete from tbl_ScriptList where ISIN = 'IN9175A01010'
 
 update tbl_ShareHolderScriptList set ToExecute='Yes',IsLocked='No'
 
-delete from tbl_ShareHolderScriptList where ISIN = ''
 */
 
-/*cd bs
+/*
 update tbl_ScriptList set islocked ='Yes', ToExecute='Yes'
 
+select * from tbl_ScriptList where isin = 'INE02EZ01014'
 
-
+update tbl_ScriptList set isin = 'INE02EZ01022' where isin = 'INE02EZ01014'
 update tbl_ScriptList set islocked ='No' , ToExecute='Yes' where isin='INE075D01018'
 -- begin tran T1
 select *  from tbl_Bse_Results where Script_name in (
@@ -35,21 +26,24 @@ select * from tbl_ScriptList where ISIN='INE139A01034'
 and ToExecute='Yes' and IsLocked='No' order by script_name 
 
 
+
 -- update tbl_ScriptList set Script_Name ='MAHINDRA & MAHINDRA LTD' where ISIN='INE101A01026'
 
-select count(*) from tbl_ScriptList where IsLocked='Yes' and ToExecute ='No'
+select count(*) from tbl_ScriptList where  ToExecute ='Yes'and IsLocked='Yes'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
-select  distinct Script_name from tbl_Bse_Results where Q1 ='Dec-23' order by Script_name
+select  distinct Script_name from tbl_Bse_Results where Q1 ='Mar-24' order by Script_name desc
 select * from tbl_Bse_Results order by script_name 
+
+
 
 
 Begin Tran T1
 update tbl_Bse_Results set 
-Q1 = replace(Q1,'Dec-23','01-Dec-23'),
-Q2 = REPLACE(Q2,'Sep-23','01-Sep-23'),
-Q3 = REPLACE(Q3,'Jun-23','01-Jun-23'),
-Q4 = REPLACE(Q4,'Mar-23','01-Mar-23'),
-Q5 = REPLACE(Q5,'Jun-22','01-Jun-22')
+Q1 = REPLACE(Q1,'Mar-24','01-Mar-24'),
+Q2 = replace(Q2,'Dec-23','01-Dec-23'),
+Q3 = REPLACE(Q3,'Sep-23','01-Sep-23'),
+Q4 = REPLACE(Q4,'Jun-23','01-Jun-23'),
+Q5 = REPLACE(Q5,'Mar-23','01-Mar-23')
  
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
 Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
