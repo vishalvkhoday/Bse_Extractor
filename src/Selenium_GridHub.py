@@ -11,9 +11,6 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import Select
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 
@@ -31,8 +28,8 @@ def getRemoteBrowser():
         # BrwChrome = webdriver.Remote(command_executor=f"http://localhost:4444/wd/hub",desired_capabilities=DesiredCapabilities.CHROME,  options=Options)
         BrwChrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=Options)
     except:
-        BrwChrome =Chrome(executable="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", options=Options)
-        # BrwChrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=Options)
+        # BrwChrome =Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", options=Options)
+        BrwChrome = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=Options)
     return BrwChrome
     
 Driver =getRemoteBrowser()

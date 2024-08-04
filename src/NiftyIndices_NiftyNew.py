@@ -30,15 +30,8 @@ Options.add_argument("start-maximized")
 # Options.add_argument("headless")
 Options.add_argument("disable-infobar")
 serviceObj = Service('C:/Users/Vishal/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe')
-
-
-
     
-def test_Nifty():
-
-
-    
-    
+def test_Nifty():    
     ChromeBwr =  webdriver.Chrome(service=serviceObj,options=Options)
     arrWin =ChromeBwr.window_handles
     if len(arrWin)>1:
@@ -51,16 +44,11 @@ def test_Nifty():
         
         while True:
             try:
-                allData = 
+                allData = []
                 TrdDatetime = ChromeBwr.find_element(By.XPATH,'/html/body/pre').get_attribute('innerText')
                 curTime = datetime.datetime.now().strftime('%H:%M:%S')
-                #cTrdTime = datetime.datetime.strptime(TrdDatetime,'%H:%M:%S').time()
-
-                #print(datetime.datetime.timestamp())
                 strdt = str(datetime.date.today())+' '+ str(TrdDatetime)
-                # strdt = datetime.datetime.strptime(strdt,'%Y-%m-%d %H:%M:%S %p').now()
-                # if strdt <= datetime.datetime.now():
-                #     pass
+                
                
                 for x in range(1,14):
                     tblExist=ChromeBwr.find_element(By.XPATH,f'//*[@id="stockwatchtable"]/tbody/tr[{x}]').get_attribute('innerText')
@@ -87,7 +75,7 @@ def test_Nifty():
                     
                 iRant = random.randint(30,70)
                 for i in range(iRant,-1,-1):
-                    print("Next refresh in {} seconds".format(i), end = "\r")
+                    print("Next refresh in {} seconds  ".format(i), end = "\r")
                     sleep(1)
                 
                 ChromeBwr.find_element(By.XPATH,'//*[@class="refresh"]').click()
