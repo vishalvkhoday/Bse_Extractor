@@ -33,8 +33,6 @@ dfAll_Data = pd.DataFrame()
 def test_Nifty():
     
     Options = ChromeOptions()    
-    # ChromeBwr =webdriver.Chrome(chrome_options=Options,executable_path="WebDriver/chromedriver_235", service_args=["--verbose", "--log-path=WebDriver/qc1.log","w+"])
-    # ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options)
     ChromeBwr =  webdriver.Chrome(service=serviceObj,options=Options)
     arrWin =ChromeBwr.window_handles
     if len(arrWin)>1:
@@ -42,13 +40,13 @@ def test_Nifty():
         ChromeBwr.switch_to.new_window('tab')
         ChromeBwr.close()
         ChromeBwr.switch_to.window('main')
-    #     ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")
+    
     try:
         # ChromeBwr.get("https://www.nseindia.com/market-data/live-market-indices")
         # ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/liveIndexWatchData.json")
         ChromeBwr.get("https://www.nseindia.com/api/allIndices")
         # ChromeBwr.get("https://www1.nseindia.com/live_market/dynaContent/live_watch/live_index_watch.htm")
-        #     WebDriverWait(ChromeBwr,5).until(EC.element_to_be_clickable((By.XPATH,'//*[@id="liveIndexWatch"]/tbody/tr[2]')), "Clicked on Home icon")
+        
         while True:
             try:
                 tblExist=ChromeBwr.find_element(By.XPATH,'/html/body/pre').get_attribute('innerText')
@@ -64,8 +62,7 @@ def test_Nifty():
             DtTm = JsonVal['timestamp']
             for item in JsonVal['data']:
                 
-                Script_Name = item.get("indexSymbol")
-                
+                Script_Name = item.get("indexSymbol")                
                 SpotPrice = item.get("last")
                 SpotPrice = str(SpotPrice).replace(',','')
                 chg = item.get("percentChange")
@@ -91,7 +88,7 @@ def test_Nifty():
                     DB_Operation().sqlRollBack(conn)
             iRant = random.randint(50,100)
             for i in range(iRant,-1,-1):
-                print("Next refresh in {} seconds ".format(i), end = "\r")                
+                print("Next refresh in {} seconds  ".format(i), end = "\r")                
                 # print("*"*i, end = "\r")
                 sleep(1)
                 

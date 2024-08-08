@@ -2,16 +2,12 @@
 
 from selenium.webdriver import Chrome
 from selenium.webdriver import ChromeOptions
-from selenium.webdriver import DesiredCapabilities
 from select import select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.common.action_chains import ActionChains
 import pytest
 from time import sleep
 from pytest import fixture
-import allure
-import allure_pytest
 
 from MSSQL_Operation import DB_Operation
 
@@ -21,7 +17,8 @@ while True:
     Options.add_argument('--start-in-incognito')
     Options.add_argument('start-maximized')
     # Options.add_argument("--disable-extensions")
-    chromeBrow = Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver",options=Options)
+    # chromeBrow = Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver",options=Options)
+    chromeBrow = Chrome(options=Options,service=None,)
 
 
     def fnClick(oBrowser):
@@ -42,8 +39,6 @@ while True:
         print(e)
         chromeBrow.close()
     objDb =DB_Operation()
-    # fnClick (chromeBrow.find_element(By.XPATH,'//*[@id="derivwatch-eqDeriv"]/div[1]/div[2]/select'))
-    # fnClick (chromeBrow.find_element(By.XPATH,"//*[contains(text(),'Nifty 50 Options')]"))
     sleep(3)
     try:
         strTradDt = chromeBrow.find_element(By.XPATH,'//*[@id="liveEquityDerTimes"]').get_attribute('innerText')

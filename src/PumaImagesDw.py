@@ -1,6 +1,5 @@
 from  selenium import webdriver
 import pytest
-import selenium.webdriver.common.by
 from selenium.webdriver.common.by import By
 import pandas as pd
 from selenium.webdriver.chrome.service import Service
@@ -60,12 +59,9 @@ if __name__ == '__main__':
         if row['ToExecute'] =='Yes':
                 
             PCode = row['ProductCode']
-            try:
-                
+            try:                
                 ImagDw(PCode)
                 pdXlxallRec.loc[pdXlxallRec['ProductCode']== PCode,'ToExecute'] = 'No'
-                
-
                 
             except Exception as  e:
                 print(e)
