@@ -8,8 +8,6 @@ Created on Sep 6, 2020
 import datetime
 from pytest import fixture
 import pyodbc
-
-
     
 # conn = pymssql.connect(user='sa',password='password',host='.\\SQLEXPRESS', database='Bse_Results',port='1433')
 # cur=conn.cursor()
@@ -17,14 +15,11 @@ class DB_Operation():
     
     def __init__(self,sql_Query=""):
         self.sql_Query = sql_Query
-    
-
        
     def db_ConnectionObject(self):
         
         conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-IFK6D8L3\\SQLEXPRESS;DATABASE=Bse_Results;UID=sa;PWD=password')
         # conn = pymssql.connect(user='sa',password='password',host='LAPTOP-IFK6D8L3\\SQLEXPRESS', database='Bse_Results',port='1433')
-        
         return conn
 #         
     def db_select(self):

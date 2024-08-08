@@ -25,7 +25,7 @@ and ToExecute='Yes' and IsLocked='No' order by script_name
 
 select count(*) from tbl_ScriptList where  ToExecute ='Yes'and IsLocked='Yes'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
-select  distinct Script_name from tbl_Bse_Results where Q1 ='Mar-24' order by Script_name desc
+select  distinct Script_name from tbl_Bse_Results where Q1 ='Jun-24' order by Script_name desc
 select * from tbl_Bse_Results order by script_name 
 
 
