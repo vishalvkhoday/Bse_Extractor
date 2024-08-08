@@ -25,7 +25,7 @@ from selenium.webdriver.chrome.service import Service
 
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
-# Options.add_argument("headless")
+Options.add_argument("headless")
 # profilePath = "C:\\Users\\Vishal\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
 # Options.add_argument("user-data-dir=" + profilePath)
 Options.add_argument("disable-infobar")
@@ -35,9 +35,6 @@ serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe
 browChrome =  webdriver.Chrome(service=serviceObj,options=Options) #Driver
 # browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
 browChrome.get("https://www.bseindia.com/")
-
-
-
 
 def getScriptName():
     get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
@@ -50,7 +47,6 @@ def ObjExist(Obj):
         return True
     else:
         False
-
 
 
 def NavigateResultsPage(ScriptName,INIE):
@@ -239,6 +235,8 @@ while(True):
         
             
 print("Done....")
+
+print("Completed...")
 browChrome.quit()
 
 if __name__ == "__main__":
