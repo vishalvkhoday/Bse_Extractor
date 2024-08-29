@@ -25,7 +25,7 @@ from selenium.webdriver.chrome.service import Service
 
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
-Options.add_argument("headless")
+# Options.add_argument("headless")
 # profilePath = "C:\\Users\\Vishal\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
 # Options.add_argument("user-data-dir=" + profilePath)
 Options.add_argument("disable-infobar")
@@ -71,6 +71,7 @@ def NavigateResultsPage(ScriptName,INIE):
                 Bse_sctTxt.send_keys(Keys.ENTER)
         except Exception as e:
             print(e)            
+            browChrome.refresh()
             time.sleep(1)
         browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
         scr_info =None
@@ -119,6 +120,7 @@ def NavigateResultsPage(ScriptName,INIE):
         
     except Exception as e:
         print('unable to navigate to results page error {}'.format(e))
+        browChrome.refresh()
         return False
 
 
