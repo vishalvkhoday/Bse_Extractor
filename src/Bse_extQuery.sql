@@ -1,3 +1,33 @@
+
+insert into Nifty_Ticker
+select top 5 * from (
+select  * from Nifty_Ticker_temp
+except
+select * from Nifty_Ticker  where Script_Name = 'Nifty 50' 
+) as T
+
+SELECT * from Nifty_Ticker_archive
+--delete from Nifty_Ticker  where Script_Name = 'Nifty 50'  and [DateTime] > getdate()-7
+
+--Shrink DB
+
+
+USE Bse_Results;
+GO
+-- Truncate the log by changing the database recovery model to SIMPLE.
+ALTER DATABASE Bse_Results
+SET RECOVERY SIMPLE;
+GO
+-- Shrink the truncated log file to 1 MB.
+DBCC SHRINKFILE (Bse_Results_log, 10);
+GO
+-- Reset the database recovery model.
+ALTER DATABASE Bse_Results
+SET RECOVERY FULL;
+GO
+
+
+
 /*
 SELECT distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2023/03/01'
 select * from tbl_ScriptList where  ISIN like 'INE696V01013'
