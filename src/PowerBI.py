@@ -17,3 +17,5 @@ matplotlib.pyplot.show = lambda args=None,kw=None: matplotlib.pyplot.savefig(str
 
 # Epilog - Auto Generated #
 os.chdir(u'C:/Users/Vishal/PythonEditorWrapper_4e5ed29b-8ae4-47bd-a36e-1c1db2654222')
+matplotlib.pyplot.figure(figsize=(5.55,4.16), dpi=72)
+
