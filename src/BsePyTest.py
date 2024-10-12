@@ -120,9 +120,30 @@ def NavigateResultsPage(ScriptName,INIE):
         
     except Exception as e:
         print('unable to navigate to results page error {}'.format(e))
-        browChrome.refresh()
+        browChrome.execute_script("window.scrollTo(0, 0);")
+        ResetPage()
+        # browChrome.refresh()
         return False
 
+def ResetPage():
+    try:
+        browChrome.find_element(By.XPATH,"(//*[@href='/index.html'])[2]").click()
+        iCounter = 0
+        while(True):
+            browChrome.refresh()
+            time.sleep(7)
+            try:
+                iStatus =browChrome.find_element(By.XPATH,"//*[contains(text(),'Index Future')]").is_displayed()
+                if iStatus == True:
+                    break
+            except:
+                iCounter+=1
+                if iCounter >= 7:
+                    break
+                continue
+    except:
+        pass
+    
 
 def GetTableRecord(Script,INIE):
     try:
@@ -223,7 +244,7 @@ while(True):
         DB_Operation().Update_data(ObjUpdatelock,sql_UpdateLock)
         DB_Operation().sqlCommit(ObjUpdatelock)
         PageStatus =NavigateResultsPage(ScriptName[0],ScriptName[1])
-        if PageStatus ==True:
+        if PageStatus == True:
             RecordExeSts =GetTableRecord(ScriptName[0],ScriptName[1])
             if RecordExeSts == False:
                 sqlExecuteFlag = "update tbl_ScriptList set ToExecute='Yes' where Script_Name = '{}'".format(ScriptName[0])

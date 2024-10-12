@@ -13,6 +13,7 @@ for filename in os.listdir(input_directory):
         # Load each CSV file into a DataFrame
         file_path = os.path.join(input_directory, filename)
         data = pd.read_csv(file_path)
+        data['Index'] = str(filename.replace('list.csv', '')[4:]).upper()
         
         # Concatenate the data to the merged_data DataFrame
         merged_data = pd.concat([merged_data, data], ignore_index=True)

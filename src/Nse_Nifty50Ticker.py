@@ -24,18 +24,14 @@ Options.add_argument("start-maximized")
 Options.add_argument("disable-infobar")
 # serviceObj = Service('C:/Users/Vishal/Downloads/chromedriver-win64/chromedriver-win64/chromedriver.exe')
 serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
-
 browChrome =  webdriver.Chrome(service=serviceObj,options=Options)
-    
+sleep(2)
 def test_Nifty():
     while True:
                 
         # browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
         browChrome.get("https://www.nseindia.com/api/allIndices")
         str_all_data = browChrome.find_element(By.XPATH,"/html/body/pre")
-
-            
-              
         sleep(45)
 
 test_Nifty()
