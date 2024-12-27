@@ -3,28 +3,26 @@ Created on Oct 27, 2019
 
 @author: DELL
 '''
-import allure
-import allure_commons
-import allure_pytest
 import pytest
 from DB_Operation import DB_Operation
 # from Selenium_GridHub import *    # uncomment when executed on remote
 # import Selenium_GridHub 
-import time,selenium
+import time
 
 from selenium.webdriver import Chrome
 from selenium.webdriver import ChromeOptions
-from selenium.webdriver import DesiredCapabilities
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
+import threading
 
+threads = []
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
+
 # Options.add_argument("headless")
 # profilePath = "C:\\Users\\Vishal\\AppData\\Local\\Google\\Chrome\\User Data\\Profile 1"
 # Options.add_argument("user-data-dir=" + profilePath)
@@ -35,6 +33,7 @@ serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe
 browChrome =  webdriver.Chrome(service=serviceObj,options=Options) #Driver
 # browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
 browChrome.get("https://www.bseindia.com/")
+
 
 def getScriptName():
     get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
@@ -62,6 +61,8 @@ def NavigateResultsPage(ScriptName,INIE):
             if browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").is_displayed():
                 # browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").click()
                 strSuggest_Xpath = "//*[contains(text(),'{}')]".format(INIE)
+                # ObjFirstSuggestion = browChrome.find_element(By.XPATH,strSuggest_Xpath)
+                ObjFirstSuggestion = WebDriverWait(browChrome,10).until(EC.element_to_be_clickable((By.XPATH,strSuggest_Xpath)))
                 ObjFirstSuggestion = browChrome.find_element(By.XPATH,strSuggest_Xpath)
                 if ObjExist(ObjFirstSuggestion) == True:
                     browChrome.find_element(By.XPATH,strSuggest_Xpath).click()
@@ -73,6 +74,7 @@ def NavigateResultsPage(ScriptName,INIE):
             print(e)            
             browChrome.refresh()
             time.sleep(1)
+            return False
         browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
         scr_info =None
         scr_info =browChrome.find_element(By.XPATH,'//*[@class="home_widget"]/div[2]').get_attribute('innerText')
@@ -94,8 +96,8 @@ def NavigateResultsPage(ScriptName,INIE):
 #         temp_scrId = str(scr_info).split("|")
         WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Jun-24') == -1:
-            print("Jun-24 quarter results not declared")
+        if tblHeader.find('Sep-24') == -1:
+            print("Sep-24 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -131,7 +133,7 @@ def ResetPage():
         iCounter = 0
         while(True):
             browChrome.refresh()
-            time.sleep(7)
+            time.sleep(17)
             try:
                 iStatus =browChrome.find_element(By.XPATH,"//*[contains(text(),'Index Future')]").is_displayed()
                 if iStatus == True:
@@ -149,10 +151,10 @@ def GetTableRecord(Script,INIE):
     try:
         time.sleep(2)
         browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
+        WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]')))
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Jun-24')!=-1:
-                             
+        if t_Tbl_details.find('Sep-24')!=-1 :                             
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
             secID=""

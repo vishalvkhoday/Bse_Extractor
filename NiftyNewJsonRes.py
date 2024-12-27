@@ -23,9 +23,8 @@ while True:
         sRes = res.text
         
         try:
-            with open('C:\\Test\Data_1.txt','w') as f:
-                f.write(sRes)
-            
+            # with open('C:\\Test\Data_1.txt','w') as f:
+            #     f.write(sRes)
             sResJson = json.loads(sRes)
         except Exception as e:
             print(e)
@@ -56,7 +55,7 @@ while True:
             except Exception as e:
                 print(e)
 
-        iRant = random.randint(30,70)
+        iRant = random.randint(55,70)
         for i in range(iRant,-1,-1):
             print("Next refresh in {} seconds".format(i), end = "\r")
             time.sleep(1)
