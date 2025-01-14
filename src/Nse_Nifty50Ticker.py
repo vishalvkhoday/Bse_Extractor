@@ -30,8 +30,13 @@ def test_Nifty():
     while True:
                 
         # browChrome = webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options) #Driver
-        browChrome.get("https://www.nseindia.com/api/allIndices")
-        str_all_data = browChrome.find_element(By.XPATH,"/html/body/pre")
-        sleep(45)
+        try:
+            browChrome.get("https://www.nseindia.com/api/allIndices")
+            str_all_data = browChrome.find_element(By.XPATH,"/html/body/pre")
+            sleep(45)
+        except Exception as e:
+            print(e)
+            sleep(1)
+            continue
 
 test_Nifty()
