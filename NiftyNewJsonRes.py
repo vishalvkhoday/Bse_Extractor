@@ -1,17 +1,19 @@
 import requests
-import fnc
+import fnc,pandas as pd
 import time
 import random
 import json
 import pyodbc
-import pytest
-from selenium.webdriver.chrome.service import Service
 
-conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-IFK6D8L3\\SQLEXPRESS;DATABASE=Bse_Results;UID=sa;PWD=password')
-cur = conn.cursor()
+def DBCursor():
+    conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-IFK6D8L3\\SQLEXPRESS;DATABASE=Bse_Results;UID=sa;PWD=password')
+    cur = conn.cursor()
+    return cur
+
 while True:
-    session = random.randint(1750021,99999999)
+    cur = DBCursor()
     url ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}&_='
+    session = current_timestamp = int(time.time())
     url = url+ str(session)
     # url ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}'
     headers = {'Accept': 'application/json' ,':method': 'GET'}
@@ -19,25 +21,27 @@ while True:
         res =requests.get(url=url)
         stcode = res.status_code
     except Exception as e:
+        print(e)
+        time.sleep(1)
         continue    
     if stcode == 200:
         # print(res.text)
         sRes = res.text        
-        try:
-            # with open('C:\\Test\Data_1.txt','w') as f:
-            #     f.write(sRes)
+        try:           
             sResJson = json.loads(sRes)
         except Exception as e:
             print(e)
-            # with open('C:\\Test\Data_1.txt','w') as f:
-            #     f.write(sRes)
             time.sleep(1)
             continue
         
         # Niftyticker = fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson)
         Niftyticker = list(fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson["data"]))
-        
+        dfIndex = pd.DataFrame(Niftyticker,columns=['indexName','timeVal','last','percChange','open','high','low','previousClose'])
+        dfIndex = dfIndex[dfIndex['previousClose'] != '-']
+        # dfIndex = dfIndex[dfIndex(['last','percChange','open','high','low','previousClose']).apply(lambda x: x.replace(',',''))]
+        Niftyticker = dfIndex.values.tolist()
         for i in Niftyticker:
+            # i = list(map(lambda x: str(x).replace(',',''),i))
             print(i)
             Ind = i[0]
             Trd = i[1]
@@ -55,9 +59,10 @@ while True:
             except Exception as e:
                 print(e)
 
-        iRant = random.randint(75,100)
-        for i in range(iRant,-1,-1):
-            print("Next refresh in {} seconds".format(i), end = "\r")
+        iRant = random.randint(59,80)
+        cur.close()
+        for i in range(iRant,-1,-1):            
+            print("Next refresh in {} seconds   ".format(i), end = "\r")
             time.sleep(1)
 
 

@@ -5,15 +5,10 @@ Created on Sep 20, 2020
 '''
 
 from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver import Chrome
 from selenium.webdriver import ChromeOptions
-from selenium.webdriver import DesiredCapabilities
-from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-import pytest
 from time import sleep
 from pytest import fixture
 from DB_Operation import DB_Operation
@@ -21,7 +16,6 @@ from time import sleep
 import json
 import fnc
 import random
-import datetime
 from selenium.webdriver.chrome.service import Service
 
 
@@ -67,9 +61,8 @@ def test_Nifty():
                         print(sql_insertQuery)
                         DB_Operation().Insert_data(conn,sql_insertQuery)
                         DB_Operation().sqlCommit(conn)
-                    except:
-                        DB_Operation().sqlRollBack(conn)
-                    
+                    except Exception as e:
+                        DB_Operation().sqlRollBack(conn)                    
                 iRant = random.randint(30,70)
                 for i in range(iRant,-1,-1):
                     print("Next refresh in {} seconds  ".format(i), end = "\r")
