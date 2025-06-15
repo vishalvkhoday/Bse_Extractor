@@ -58,4 +58,9 @@ class DB_Operation():
         conn = objRollBack
         conn.rollback()
         print("Transaction rollback successful")
-        
+    
+    def sqlClose(self):
+        conn = DB_Operation.db_ConnectionObject(self)
+        cur = conn.cursor()
+        cur.close()
+        print("Connection close successful")

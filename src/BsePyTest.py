@@ -17,9 +17,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-import threading
 
-threads = []
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
 
@@ -36,7 +34,7 @@ browChrome.get("https://www.bseindia.com/")
 
 
 def getScriptName():
-    get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name"
+    get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name desc"
     objDb =DB_Operation(get_script)
     ArryScrLst = objDb.db_select()
     return ArryScrLst
@@ -96,8 +94,8 @@ def NavigateResultsPage(ScriptName,INIE):
 #         temp_scrId = str(scr_info).split("|")
         WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Sep-24') == -1:
-            print("Sep-24 quarter results not declared")
+        if tblHeader.find('Dec-24') == -1:
+            print("Dec-24 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -154,7 +152,7 @@ def GetTableRecord(Script,INIE):
         WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]')))
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Sep-24')!=-1 :                             
+        if t_Tbl_details.find('Dec-24')!=-1 :                             
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
             secID=""

@@ -1,22 +1,28 @@
 import requests
 import pandas as pd
-import fnc
-import selenium
 from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.by import By
 import json
 import pyodbc,time,random
-
+from selenium.webdriver.chrome.service import Service
 
 Options = ChromeOptions()
 Options.add_argument("start-maximized")
-ChromeBwr =webdriver.Chrome(executable_path="C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver", chrome_options=Options)
+Options.add_argument("disable-infobars")
 
 
+serviceObj = Service('C:/Vishal/git/Bse_Extractor/src/WebDriver/chromedriver.exe')
+# browChrome =  webdriver.Chrome(options=Options) #Driver
+ChromeBwr =  webdriver.Chrome(service=serviceObj,options=Options) #Driver
 # url = "https://www.nseindia.com/api/equity-stock?index=allcontracts"
 # url = "https://www.nseindia.com/api/equity-stock?index=opt_nifty50"
 # url = 'https://www.nseindia.com/api/equity-stock?index=opt_niftybank'
+# ChromeBwr.get("https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY")
+# cookies = ChromeBwr.get_cookies()
+# for cookie in cookies:
+#     ChromeBwr.add_cookie(cookie)
+# ChromeBwr.get("https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY")
         
 
 def getFnOData():
@@ -28,9 +34,13 @@ def getFnOData():
         res = ChromeBwr.find_element(By.XPATH,"/html/body/pre")
 
     jsonRes = json.loads(res.text)
-    vol_timestamp = jsonRes['vol_timestamp']
+    vol_timestamp = jsonRes['records']['timestamp']
+    
+    dfFut = pd.read_json(res.text)
+    for y in dfFut.iterrows():
+        print(y[1][0])
 
-    dfFutures = pd.DataFrame(data=jsonRes['value'])
+    dfFutures = pd.DataFrame(data=jsonRes['records']['data'])
     dfFutures['vol_timestamp'] =vol_timestamp
 
     for i in dfFutures.iterrows():        
@@ -46,8 +56,8 @@ def getFnOData():
         except Exception as e:
             print(e)
 
-url = "https://www.nseindia.com/api/equity-stock?index=opt_nifty50"
-ChromeBwr.get(url)
+Weburl = "https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY"
+ChromeBwr.get(Weburl)
 
 while True:
     

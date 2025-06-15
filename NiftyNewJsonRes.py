@@ -12,58 +12,37 @@ def DBCursor():
 
 while True:
     cur = DBCursor()
-    url ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}&_='
-    session = current_timestamp = int(time.time())
-    url = url+ str(session)
+    webURL ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}&_='+str(int(time.time()))
     # url ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}'
-    headers = {'Accept': 'application/json' ,':method': 'GET'}
+    
+    header = {'Accept': 'application/json' }
     try:
-        res =requests.get(url=url)
-        stcode = res.status_code
-    except Exception as e:
-        print(e)
-        time.sleep(1)
-        continue    
-    if stcode == 200:
-        # print(res.text)
-        sRes = res.text        
-        try:           
-            sResJson = json.loads(sRes)
-        except Exception as e:
-            print(e)
-            time.sleep(1)
-            continue
-        
-        # Niftyticker = fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson)
-        Niftyticker = list(fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson["data"]))
+        res =requests.get(url=webURL,headers=header,timeout=5).json()
+        # Niftyticker = list(fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),sResJson["data"]))
+        Niftyticker = list(fnc.map(('indexName','timeVal','last','percChange','open','high','low','previousClose'),res["data"]))
         dfIndex = pd.DataFrame(Niftyticker,columns=['indexName','timeVal','last','percChange','open','high','low','previousClose'])
         dfIndex = dfIndex[dfIndex['previousClose'] != '-']
-        # dfIndex = dfIndex[dfIndex(['last','percChange','open','high','low','previousClose']).apply(lambda x: x.replace(',',''))]
         Niftyticker = dfIndex.values.tolist()
         for i in Niftyticker:
-            # i = list(map(lambda x: str(x).replace(',',''),i))
-            print(i)
-            Ind = i[0]
-            Trd = i[1]
-            Spot = str(i[2]).replace(',','')
-            Chg = i[3]
-            IndOpen = i[4].replace(',','')
-            IndHigh = i[5].replace(',','')
-            IndLow = i[6].replace(',','')
-            IndPreCls = i[7].replace(',','')           
-            NiftySql = f"insert into Nifty_Ticker (Script_Name, [DateTime], SpotPrice, chg, IndOpen, IndHigh, IndLow, IndPreClose) values ( '{Ind}',CONVERT(datetime,'{Trd}'),'{Spot}','{Chg}','{IndOpen}','{IndHigh}','{IndLow}','{IndPreCls}')"
+            ii = list(map(lambda x: str(x).replace(',',''),i[2:]))
+            # print(i)  
+            # NiftySql = f"insert into Nifty_Ticker (Script_Name, [DateTime], SpotPrice, chg, IndOpen, IndHigh, IndLow, IndPreClose) values ( '{Ind}',CONVERT(datetime,'{Trd}'),'{Spot}','{Chg}','{IndOpen}','{IndHigh}','{IndLow}','{IndPreCls}')"
+            NiftySql = f"""insert into Nifty_Ticker (Script_Name, [DateTime], SpotPrice, chg, IndOpen, IndHigh, IndLow, IndPreClose) values
+              ( '{i[0]}',CONVERT(datetime,'{i[1]}'),'{ii[0]}','{ii[1]}','{ii[2]}','{ii[3]}','{ii[4]}','{ii[5]}')"""
             print(NiftySql)
             try:
                 cur.execute(NiftySql)
                 cur.commit()
             except Exception as e:
                 print(e)
-
-        iRant = random.randint(59,80)
-        cur.close()
-        for i in range(iRant,-1,-1):            
-            print("Next refresh in {} seconds   ".format(i), end = "\r")
-            time.sleep(1)
+                cur.rollback()
+    except Exception as e:
+        print(e)
+    cur.close()
+    iRant = random.randint(59,80)
+    for i in range(iRant,-1,-1):            
+        print("Next refresh in {} seconds   ".format(i), end = "\r")
+        time.sleep(1)
 
 
     
