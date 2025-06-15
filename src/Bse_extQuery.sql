@@ -1,3 +1,7 @@
+select * from tbl_ScriptList where Script_Name not in (
+    select  distinct Script_name from tbl_Bse_Results where Q1 ='Jun-24' 
+)
+
 /*
 SELECT distinct Script_name from tbl_ShareHolding_BSE  where [Quarter] = '2023/03/01'
 select * from tbl_ScriptList where  ISIN like 'INE696V01013'
@@ -25,7 +29,7 @@ and ToExecute='Yes' and IsLocked='No' order by script_name
 
 select count(*) from tbl_ScriptList where  ToExecute ='Yes'and IsLocked='Yes'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
-select  distinct Script_name from tbl_Bse_Results where Q1 ='Jun-24' order by Script_name desc
+select  distinct Script_name from tbl_Bse_Results where Q1 ='Sep-24' order by Script_name
 select * from tbl_Bse_Results order by script_name 
 
 
@@ -33,12 +37,13 @@ select * from tbl_Bse_Results order by script_name
 
 Begin Tran T1
 update tbl_Bse_Results set 
-Q1 = REPLACE(Q1,'Mar-24','01-Mar-24'),
-Q2 = replace(Q2,'Dec-23','01-Dec-23'),
-Q3 = REPLACE(Q3,'Sep-23','01-Sep-23'),
-Q4 = REPLACE(Q4,'Jun-23','01-Jun-23'),
-Q5 = REPLACE(Q5,'Mar-23','01-Mar-23')
- 
+Q1 = REPLACE(Q1,'Sep-24','01-Sep-24'),
+Q2 = REPLACE(Q2,'Jun-24','01-Jun-24'),
+Q3 = REPLACE(Q3,'Mar-24','01-Mar-24'),
+Q4 = replace(Q4,'Dec-23','01-Dec-23'),
+Q5 = REPLACE(Q5,'Sep-23','01-Sep-23')
+
+
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
 Q4=REPLACE(Q4,'--','0'), Q5=REPLACE(Q5,'--','0')
 
