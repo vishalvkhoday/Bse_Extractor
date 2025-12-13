@@ -4,6 +4,7 @@ import time
 import random
 import json
 import pyodbc
+from datetime import datetime
 
 def DBCursor():
     conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=LAPTOP-IFK6D8L3\\SQLEXPRESS;DATABASE=Bse_Results;UID=sa;PWD=password')
@@ -11,6 +12,12 @@ def DBCursor():
     return cur
 
 while True:
+    now = datetime.now()
+    mkthh =now.strftime('%H%M')
+    if (int(mkthh) >= 1535):
+        print("Market is closed, exiting script.")
+        break
+    
     cur = DBCursor()
     webURL ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}&_='+str(int(time.time()))
     # url ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}'

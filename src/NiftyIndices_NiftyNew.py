@@ -62,8 +62,9 @@ def test_Nifty():
                         DB_Operation().Insert_data(conn,sql_insertQuery)
                         DB_Operation().sqlCommit(conn)
                     except Exception as e:
-                        DB_Operation().sqlRollBack(conn)                    
-                iRant = random.randint(30,70)
+                        DB_Operation().sqlRollBack(conn) 
+                DB_Operation().sqlClose()
+                iRant = random.randint(60,70)
                 for i in range(iRant,-1,-1):
                     print("Next refresh in {} seconds  ".format(i), end = "\r")
                     sleep(1)

@@ -94,8 +94,8 @@ def NavigateResultsPage(ScriptName,INIE):
 #         temp_scrId = str(scr_info).split("|")
         WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Dec-24') == -1:
-            print("Dec-24 quarter results not declared")
+        if tblHeader.find('Mar-25') == -1:
+            print("Mar-25 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()

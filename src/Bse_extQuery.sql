@@ -30,18 +30,18 @@ and ToExecute='Yes' and IsLocked='No' order by script_name
 select count(*) from tbl_ScriptList where  ToExecute ='Yes'and IsLocked='Yes'
 select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No'order by script_name 
 select  distinct Script_name from tbl_Bse_Results where Q1 ='Sep-24' order by Script_name
-select * from tbl_Bse_Results order by script_name 
+select count(distinct script_name) from tbl_Bse_Results order by script_name 
 
 
 
 
 Begin Tran T1
 update tbl_Bse_Results set 
-Q1 = REPLACE(Q1,'Sep-24','01-Sep-24'),
-Q2 = REPLACE(Q2,'Jun-24','01-Jun-24'),
-Q3 = REPLACE(Q3,'Mar-24','01-Mar-24'),
-Q4 = replace(Q4,'Dec-23','01-Dec-23'),
-Q5 = REPLACE(Q5,'Sep-23','01-Sep-23')
+Q1 = REPLACE(Q1,'Mar-25','01-Mar-25'),
+Q2 = REPLACE(Q2,'Dec-24','01-Dec-24'),
+Q3 = REPLACE(Q3,'Sep-24','01-Sep-24'),
+Q4 = replace(Q4,'Jun-24','01-Jun-24'),
+Q5 = REPLACE(Q5,'Mar-24','01-Mar-24')
 
 
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
