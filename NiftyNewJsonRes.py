@@ -19,9 +19,11 @@ while True:
         break
     
     cur = DBCursor()
-    webURL ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}&_='+str(int(time.time()))
+    # webURL ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}&_='+str(int(time.time()))
+    webURL = 'https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch_new.json?{}&_='+str(int(time.time()))
     # url ='https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch.json?{}'
     
+    # https://iislliveblob.niftyindices.com/jsonfiles/LiveIndicesWatch_new.json?{}&_=1768794136446
     header = {'Accept': 'application/json' }
     try:
         res =requests.get(url=webURL,headers=header,timeout=5).json()
@@ -46,7 +48,7 @@ while True:
     except Exception as e:
         print(e)
     cur.close()
-    iRant = random.randint(59,80)
+    iRant = random.randint(100,110)
     for i in range(iRant,-1,-1):            
         print("Next refresh in {} seconds   ".format(i), end = "\r")
         time.sleep(1)
