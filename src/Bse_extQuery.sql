@@ -42,6 +42,7 @@ Q2 = REPLACE(Q2,'Dec-24','01-Dec-24'),
 Q3 = REPLACE(Q3,'Sep-24','01-Sep-24'),
 Q4 = replace(Q4,'Jun-24','01-Jun-24'),
 Q5 = REPLACE(Q5,'Mar-24','01-Mar-24')
+where Particular like '%(in Cr.)%' and Q1='Mar-26'
 
 
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),

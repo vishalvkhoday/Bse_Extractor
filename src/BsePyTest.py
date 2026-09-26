@@ -34,7 +34,7 @@ browChrome.get("https://www.bseindia.com/")
 
 
 def getScriptName():
-    get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' order by Script_Name desc"
+    get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' and isin like 'INE%' order by Script_Name  desc"
     objDb =DB_Operation(get_script)
     ArryScrLst = objDb.db_select()
     return ArryScrLst
@@ -50,20 +50,20 @@ def NavigateResultsPage(ScriptName,INIE):
     try:
         WinHandlers()
         INIE = str(INIE).strip()
-        Bse_sctTxt = browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]')                
+        Bse_sctTxt = browChrome.find_element(By.XPATH,'//*[@id="scripsearchtxtbx"]')                
         Bse_sctTxt.send_keys(INIE +" ")
         time.sleep(2)
         Bse_sctTxt.send_keys(Keys.BACK_SPACE)
         time.sleep(2)
         try:
-            if browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").is_displayed():
-                # browChrome.find_element(By.XPATH,"//*[@id='ulSearchQuote']/li").click()
-                strSuggest_Xpath = "//*[contains(text(),'{}')]".format(INIE)
+            if browChrome.find_element(By.XPATH,'//*[@id="opt-0"]/a').is_displayed():
+                browChrome.find_element(By.XPATH,'//*[@id="opt-0"]/a').click()
+                # strSuggest_Xpath = "//*[contains(text(),'{}')]".format(INIE)
+                ObjFirstSuggestion = browChrome.find_element(By.XPATH,'//*[@id="opt-0"]/a')
+                # ObjFirstSuggestion = WebDriverWait(browChrome,10).until(EC.element_to_be_clickable((By.XPATH,strSuggest_Xpath)))
                 # ObjFirstSuggestion = browChrome.find_element(By.XPATH,strSuggest_Xpath)
-                ObjFirstSuggestion = WebDriverWait(browChrome,10).until(EC.element_to_be_clickable((By.XPATH,strSuggest_Xpath)))
-                ObjFirstSuggestion = browChrome.find_element(By.XPATH,strSuggest_Xpath)
                 if ObjExist(ObjFirstSuggestion) == True:
-                    browChrome.find_element(By.XPATH,strSuggest_Xpath).click()
+                    browChrome.find_element(By.XPATH,'//*[@id="opt-0"]/a').click()
                 else:
                     Bse_sctTxt.send_keys(Keys.ENTER)
             else:
@@ -73,29 +73,29 @@ def NavigateResultsPage(ScriptName,INIE):
             browChrome.refresh()
             time.sleep(1)
             return False
-        browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
+        browChrome.find_element(By.XPATH,'//*[@id="scripsearchtxtbx"]').clear()
         scr_info =None
-        scr_info =browChrome.find_element(By.XPATH,'//*[@class="home_widget"]/div[2]').get_attribute('innerText')
+        scr_info =browChrome.find_element(By.XPATH,'/html/body/app-root/main/app-stock-share-price/main/app-getquote-header/div[1]/div/div[1]/div[1]/div[1]/div[2]').get_attribute('innerText')
         scr_info = scr_info.replace("(","")
         scr_info = scr_info.replace(")","")
         scr_info = str(scr_info).strip()
 
         if str(scr_info).find(INIE)==-1:
-            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').click()
-            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').send_keys(ScriptName +" ")
+            browChrome.find_element(By.XPATH,'//*[@id="scripsearchtxtbx"]').click()
+            browChrome.find_element(By.XPATH,'//*[@id="scripsearchtxtbx"]').send_keys(ScriptName +" ")
             time.sleep(3)
-            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').send_keys(Keys.ENTER)
-            browChrome.find_element(By.XPATH,'//*[@id="getquotesearch"]').clear()
+            browChrome.find_element(By.XPATH,'//*[@id="scripsearchtxtbx"]').send_keys(Keys.ENTER)
+            browChrome.find_element(By.XPATH,'//*[@id="scripsearchtxtbx"]').clear()
             time.sleep(2) 
             scr_info =None
-            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding ng-scope"]').get_attribute('innerText')
+            scr_info =browChrome.find_element(By.XPATH,'/html/body/app-root/main/app-stock-share-price/main/app-getquote-header/div[1]/div/div[1]/div[1]/div[1]/div[2]').get_attribute('innerText')
             scr_info = scr_info.replace("(","")
             scr_info = scr_info.replace(")","")
 #         temp_scrId = str(scr_info).split("|")
-        WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]')))
-        tblHeader =browChrome.find_element(By.XPATH,'//*[@id="res"]/div/div[1]/table/thead/tr[3]').get_attribute('innerText')
-        if tblHeader.find('Sep-25') == -1:
-            print("Sep-25 quarter results not declared")
+        WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="Result"]/table')))
+        tblHeader =browChrome.find_element(By.XPATH,'//*[@id="Result"]/table').get_attribute('innerText')
+        if tblHeader.find('Jun-26') == -1:
+            print("Jun-26 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -149,18 +149,18 @@ def GetTableRecord(Script,INIE):
     try:
         time.sleep(2)
         
-        WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]')))
-        browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').location_once_scrolled_into_view
-        t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="qtly"]/table/tbody/tr/td/table[1]').get_attribute('innerText')
+        WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="Quaterly"]/table/thead/tr')))
+        browChrome.find_element(By.XPATH,'//*[@id="Quaterly"]/table/thead/tr').location_once_scrolled_into_view
+        t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="Quaterly"]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Sep-25')!=-1 :                             
+        if t_Tbl_details.find('Jun-26')!=-1 :                             
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
             secID=""
             sec_code = ""
             sec_ISIN = ""
             scr_info =None
-            scr_info =browChrome.find_element(By.XPATH,'//div[@class="ng-binding ng-scope"]').get_attribute('innerText')
+            scr_info =browChrome.find_element(By.XPATH,'/html/body/app-root/main/app-stock-share-price/main/app-getquote-header/div[1]/div/div[1]/div[1]/div[1]/div[2]').get_attribute('innerText')
             scr_info = scr_info.replace("(","")
             scr_info = scr_info.replace(")","")
             temp_scrId = str(scr_info).split("|")
