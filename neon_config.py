@@ -32,7 +32,7 @@ def get_neon_table_name(conn):
             cur.execute("SELECT to_regclass(%s)", ('Nifty_Ticker',))
             quoted = cur.fetchone()
             if quoted and quoted[0]:
-                return '"Nifty_Ticker"'
+                return '"nifty_ticker"'
 
             cur.execute("SELECT to_regclass(%s)", ('nifty_ticker',))
             lowered = cur.fetchone()
