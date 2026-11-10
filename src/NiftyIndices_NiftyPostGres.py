@@ -63,7 +63,7 @@ def test_Nifty():
             mkthh =now.strftime('%H%M')
             if (int(mkthh) >= 1535):
                 print("Market is closed, exiting script.")
-                # break
+                break
 
             url = "https://www.nseindia.com/api/allIndices"
             
@@ -142,14 +142,14 @@ def test_Nifty():
                                             )
                                         neon_conn.commit()
                                     except Exception as e:
-                                        # print(f"Neon insert failed for {Script_Name}: {e}")
+                                        print(f"Neon insert failed for {Script_Name}: {e}")
                                         neon_conn.rollback()
 
                         except Exception as e:
                             print(f"Record skipped due to validation error: {e}")
                             continue
 
-                    iRant = random.randint(90,112)
+                    iRant = random.randint(92,109)
                     for i in range(iRant,-1,-1):
                         print("Next refresh in {} seconds  ".format(i), end = "\r")
                         sleep(1)

@@ -34,7 +34,7 @@ browChrome.get("https://www.bseindia.com/")
 
 
 def getScriptName():
-    get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' and isin like 'INE%' order by Script_Name  desc"
+    get_script="select * from tbl_ScriptList where ToExecute='Yes' and IsLocked='No' and isin like 'INE%'  order by Script_Name desc "
     objDb =DB_Operation(get_script)
     ArryScrLst = objDb.db_select()
     return ArryScrLst
@@ -94,8 +94,8 @@ def NavigateResultsPage(ScriptName,INIE):
 #         temp_scrId = str(scr_info).split("|")
         WebDriverWait(browChrome,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="Result"]/table')))
         tblHeader =browChrome.find_element(By.XPATH,'//*[@id="Result"]/table').get_attribute('innerText')
-        if tblHeader.find('Jun-26') == -1:
-            print("Jun-26 quarter results not declared")
+        if tblHeader.find('Sep-26') == -1:
+            print("Sep-26 quarter results not declared")
             return False
         else:
 #             browChrome.find_element_by_xpath('(//*[@id="tabres"])[1]').click()
@@ -153,7 +153,7 @@ def GetTableRecord(Script,INIE):
         browChrome.find_element(By.XPATH,'//*[@id="Quaterly"]/table/thead/tr').location_once_scrolled_into_view
         t_Tbl_details = browChrome.find_element(By.XPATH,'//*[@id="Quaterly"]').get_attribute('innerText')
         t_Tbl_details = t_Tbl_details.replace("Income Statement", "").replace("%", "")
-        if t_Tbl_details.find('Jun-26')!=-1 :                             
+        if t_Tbl_details.find('Sep-26')!=-1 :                             
             time.sleep(2)
             spt_Tbl_details = t_Tbl_details.splitlines()
             secID=""

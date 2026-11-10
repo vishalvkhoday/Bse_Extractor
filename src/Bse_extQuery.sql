@@ -37,12 +37,12 @@ select count(distinct script_name) from tbl_Bse_Results order by script_name
 
 Begin Tran T1
 update tbl_Bse_Results set 
-Q1 = REPLACE(Q1,'Mar-25','01-Mar-25'),
-Q2 = REPLACE(Q2,'Dec-24','01-Dec-24'),
-Q3 = REPLACE(Q3,'Sep-24','01-Sep-24'),
-Q4 = replace(Q4,'Jun-24','01-Jun-24'),
-Q5 = REPLACE(Q5,'Mar-24','01-Mar-24')
-where Particular like '%(in Cr.)%' and Q1='Mar-26'
+Q1 = REPLACE(Q1,'Sep-26','01-Sep-26'),
+Q2 = REPLACE(Q2,'Jun-26','01-Jun-26'),
+Q3 = REPLACE(Q3,'Mar-26','01-Mar-26'),
+Q4 = replace(Q4,'Dec-25','01-Dec-25'),
+Q5 = REPLACE(Q5,'Sep-25','01-Sep-25')
+where Particular like '%(in Cr.)%' and Q1='Sep-26'
 
 
 update tbl_Bse_Results set Q1 = replace(Q1,'--','0'),Q2=replace(Q2,'--','0') ,Q3= REPLACE(Q3,'--','0'),
